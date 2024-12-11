@@ -12,7 +12,6 @@ public:
     void Shoot();
     void UpdateCannonballs();
     void TakeDamage(float amount);
-
     Vector2 GetPosition() const { return position; }
     bool IsSinking() const { return isSinking; }
     const std::vector<Cannonball>& GetCannonballs() const { return cannonballs; }
@@ -24,9 +23,8 @@ private:
     static float lerp(float start, float end, float amount);
     static float Clamp(float value, float min, float max);
 
-    // Properties
-    Vector2 position{ 200, 600 };  // Starting near pirate island
-    Vector2 velocity{ 0, 0 };
+    Vector2 position{ 200.0f, 600.0f };
+    Vector2 velocity{ 0.0f, 0.0f };
     float rotation = 0.0f;
     float angularVelocity = 0.0f;
     float targetRotation = 0.0f;
@@ -38,12 +36,9 @@ private:
     float sinkProgress = 0.0f;
     float reloadTime = 0.0f;
 
-    // AI movement constants
     static constexpr float CIRCLE_RADIUS = 150.0f;
     static constexpr float CIRCLE_SPEED = 0.1f;
-    static constexpr Vector2 ISLAND_CENTER = { 200, 600 };
-
-    // Physics constants matched with navy ship
+    static constexpr Vector2 ISLAND_CENTER = { 200.0f, 600.0f };
     static constexpr float TURN_RATE = 0.1f;
     static constexpr float ACCELERATION = 0.02f;
     static constexpr float ANGULAR_DAMPING = 0.95f;

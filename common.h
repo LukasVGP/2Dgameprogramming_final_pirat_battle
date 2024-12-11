@@ -7,4 +7,6 @@ struct Cannonball {
     float rotation;
     bool active;
     float distanceTraveled;
+    float lifetime = 0.0f;
+    float maxLifetime = 2.0f;
 };

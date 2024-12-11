@@ -1,6 +1,5 @@
 #pragma once
 #include "raylib.h"
-#include <cmath>
 
 class Environment {
 public:
@@ -12,8 +11,9 @@ private:
     void DrawOcean();
     void DrawPirateIsland();
     void DrawNavyIsland();
-    void DrawWaves();
     void DrawClouds();
+    void DrawTowerWithFlag(float x, float y, Color towerColor, Color flagColor);
+    void DrawFlagPole(float x, float y);
 
     struct Cloud {
         Vector2 position;
