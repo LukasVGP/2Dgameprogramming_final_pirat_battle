@@ -75,7 +75,7 @@ void PirateShip::Draw() {
     Vector2 center = position;
     float rot = rotation * RAD2DEG;
 
-    // Draw hull
+    // Enhanced hull
     DrawRectanglePro(
         Rectangle{ center.x, center.y, 50, 25 },
         Vector2{ 25, 12.5f },
@@ -83,7 +83,21 @@ void PirateShip::Draw() {
         mainColor
     );
 
-    // Draw pirate mast and sail
+    // Deck details
+    Vector2 rotatedOffset;
+    rotatedOffset.x = cosf(rotation);
+    rotatedOffset.y = sinf(rotation);
+
+    // Cannon ports
+    for (int i = -1; i <= 1; i++) {
+        Vector2 portPos = {
+            center.x + rotatedOffset.y * i * 8,
+            center.y - rotatedOffset.x * i * 8
+        };
+        DrawCircle(portPos.x, portPos.y, 2, BLACK);
+    }
+
+    // Main mast
     DrawLineEx(
         Vector2{ center.x, center.y },
         Vector2{ center.x, center.y - 35 },
@@ -91,15 +105,27 @@ void PirateShip::Draw() {
         DARKBROWN
     );
 
+    // Pirate sail with skull
     DrawTriangle(
         Vector2{ center.x, center.y - 35 },
         Vector2{ center.x - 20, center.y },
         Vector2{ center.x + 20, center.y },
-        DARKGRAY
+        BLACK
     );
+
+    // Skull emblem
+    Vector2 skullPos = {
+        center.x,
+        center.y - 20
+    };
+    DrawCircle(skullPos.x, skullPos.y, 5, WHITE);
+    DrawCircle(skullPos.x - 2, skullPos.y - 1, 1, BLACK);
+    DrawCircle(skullPos.x + 2, skullPos.y - 1, 1, BLACK);
+    DrawLine(skullPos.x - 3, skullPos.y + 2, skullPos.x + 3, skullPos.y + 2, BLACK);
 
     DrawShipDetails();
 }
+
 
 void PirateShip::DrawShipDetails() {
     Vector2 center = position;

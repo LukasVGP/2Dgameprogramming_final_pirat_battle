@@ -52,20 +52,63 @@ void NavyShip::UpdatePhysics() {
 }
 
 void NavyShip::Draw() {
-    if (isSinking) {
-        sinkProgress = Clamp(sinkProgress, 0.0f, 1.0f);
-        Color tint = ColorAlpha(WHITE, 1.0f - sinkProgress);
-    }
+    Color shipColor = isSinking ?
+        ColorAlpha(WHITE, 1.0f - sinkProgress) : WHITE;
 
+    Vector2 center = position;
+    float rot = rotation * RAD2DEG;
+
+    // Enhanced hull
     DrawRectanglePro(
-        Rectangle{ position.x, position.y, 40, 20 },
+        Rectangle{ center.x, center.y, 40, 20 },
         Vector2{ 20, 10 },
-        rotation * RAD2DEG,
+        rot,
+        shipColor
+    );
+
+    Vector2 rotatedOffset;
+    rotatedOffset.x = cosf(rotation);
+    rotatedOffset.y = sinf(rotation);
+
+    // Multiple masts
+    DrawLineEx(
+        Vector2{ center.x - rotatedOffset.x * 10, center.y - rotatedOffset.y * 10 },
+        Vector2{ center.x - rotatedOffset.x * 10, center.y - rotatedOffset.y * 10 - 30 },
+        2.0f,
+        BROWN
+    );
+    DrawLineEx(
+        Vector2{ center.x + rotatedOffset.x * 10, center.y + rotatedOffset.y * 10 },
+        Vector2{ center.x + rotatedOffset.x * 10, center.y + rotatedOffset.y * 10 - 30 },
+        2.0f,
+        BROWN
+    );
+
+    // Navy sails
+    DrawTriangle(
+        Vector2{ center.x - rotatedOffset.x * 10, center.y - rotatedOffset.y * 10 - 30 },
+        Vector2{ center.x - rotatedOffset.x * 25, center.y - rotatedOffset.y * 10 },
+        Vector2{ center.x - rotatedOffset.x * 5, center.y - rotatedOffset.y * 10 },
         WHITE
+    );
+    DrawTriangle(
+        Vector2{ center.x + rotatedOffset.x * 10, center.y + rotatedOffset.y * 10 - 30 },
+        Vector2{ center.x + rotatedOffset.x * 25, center.y + rotatedOffset.y * 10 },
+        Vector2{ center.x + rotatedOffset.x * 5, center.y + rotatedOffset.y * 10 },
+        WHITE
+    );
+
+    // Navy flag
+    DrawRectanglePro(
+        Rectangle{ center.x, center.y - 25, 15, 10 },
+        Vector2{ 0, 0 },
+        rot,
+        BLUE
     );
 
     DrawShipDetails();
 }
+
 
 void NavyShip::Shoot() {
     if (reloadTime <= 0) {

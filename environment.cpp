@@ -5,7 +5,7 @@ Environment::Environment() {
     for (int i = 0; i < MAX_CLOUDS; i++) {
         clouds[i].position = { (float)GetRandomValue(0, 1200), (float)GetRandomValue(50, 200) };
         clouds[i].size = GetRandomValue(30, 60);
-        // Reduce speed to 10% by dividing by 300 instead of 30
+
         clouds[i].speed = GetRandomValue(1, 3) / 300.0f;
     }
     time = 0;
