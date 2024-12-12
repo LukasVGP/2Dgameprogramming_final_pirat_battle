@@ -1,7 +1,4 @@
-﻿  environment.cpp
-  game_logic.cpp
-  main.cpp
-  Generating Code...
+﻿  navyship.cpp
   2Dgameprogramming_final_pirat_battle.vcxproj -> C:\Users\hopli\Documents\GitHub\2Dgameprogramming_final_pirat_battle\x64\Debug\2Dgameprogramming_final_pirat_battle.exe
   'pwsh.exe' is not recognized as an internal or external command,
   operable program or batch file.

@@ -31,79 +31,89 @@ void NavyShip::Update() {
 
 void NavyShip::UpdatePhysics() {
     float deltaTime = GetFrameTime();
-
     float targetVelX = cosf(rotation) * targetSpeed;
     float targetVelY = sinf(rotation) * targetSpeed;
-
     velocity.x = lerp(velocity.x, targetVelX, ACCELERATION);
     velocity.y = lerp(velocity.y, targetVelY, ACCELERATION);
-
     velocity.x *= LINEAR_DAMPING;
     velocity.y *= LINEAR_DAMPING;
-
     position.x += velocity.x;
     position.y += velocity.y;
-
     position.x = Clamp(position.x, 0.0f, 1200.0f);
     position.y = Clamp(position.y, 0.0f, 1200.0f);
 }
 
 void NavyShip::Draw() {
-    Color shipColor = isSinking ?
-        ColorAlpha(DARKBLUE, 1.0f - sinkProgress) : DARKBLUE;
+    Color shipColor = isSinking ? ColorAlpha(DARKBLUE, 1.0f - sinkProgress) : DARKBLUE;
     Color sailColor = WHITE;
-
     Vector2 center = position;
     float rot = rotation * RAD2DEG;
+    Vector2 rotatedOffset = { cosf(rotation), sinf(rotation) };
 
-    // Enhanced hull
+    // Main hull
     DrawRectanglePro(
-        Rectangle{ center.x, center.y, 40, 20 },
-        Vector2{ 20, 10 },
+        Rectangle{ center.x, center.y, 60, 20 },
+        Vector2{ 30, 10 },
         rot,
         shipColor
     );
 
-    Vector2 rotatedOffset;
-    rotatedOffset.x = cosf(rotation);
-    rotatedOffset.y = sinf(rotation);
-
-    // Multiple masts
-    DrawLineEx(
-        Vector2{ center.x - rotatedOffset.x * 10, center.y - rotatedOffset.y * 10 },
-        Vector2{ center.x - rotatedOffset.x * 10, center.y - rotatedOffset.y * 10 - 30 },
-        2.0f,
-        BROWN
-    );
-
-    DrawLineEx(
-        Vector2{ center.x + rotatedOffset.x * 10, center.y + rotatedOffset.y * 10 },
-        Vector2{ center.x + rotatedOffset.x * 10, center.y + rotatedOffset.y * 10 - 30 },
-        2.0f,
-        BROWN
-    );
-
-    // White sails
+    // Bow (front)
+    Vector2 bowTip = {
+        center.x + rotatedOffset.x * 35,
+        center.y + rotatedOffset.y * 35
+    };
     DrawTriangle(
-        Vector2{ center.x - rotatedOffset.x * 10, center.y - rotatedOffset.y * 10 - 30 },
-        Vector2{ center.x - rotatedOffset.x * 25, center.y - rotatedOffset.y * 10 },
-        Vector2{ center.x - rotatedOffset.x * 5, center.y - rotatedOffset.y * 10 },
-        sailColor
+        Vector2{ center.x + rotatedOffset.x * 30, center.y + rotatedOffset.y * 30 - 10 },
+        Vector2{ center.x + rotatedOffset.x * 30, center.y + rotatedOffset.y * 30 + 10 },
+        bowTip,
+        shipColor
     );
 
-    DrawTriangle(
-        Vector2{ center.x + rotatedOffset.x * 10, center.y + rotatedOffset.y * 10 - 30 },
-        Vector2{ center.x + rotatedOffset.x * 25, center.y + rotatedOffset.y * 10 },
-        Vector2{ center.x + rotatedOffset.x * 5, center.y + rotatedOffset.y * 10 },
-        sailColor
-    );
-
-    // Navy flag
+    // Stern (back)
     DrawRectanglePro(
-        Rectangle{ center.x, center.y - 25, 15, 10 },
+        Rectangle{ center.x - rotatedOffset.x * 25, center.y - rotatedOffset.y * 25, 25, 30 },
+        Vector2{ 12.5f, 15 },
+        rot,
+        DARKBLUE
+    );
+
+    // Three masts with triangle sails
+    float mastSpacing = 20.0f;
+    for (int i = -1; i <= 1; i++) {
+        float mastOffset = i * mastSpacing;
+
+        // Brown mast base
+        DrawRectanglePro(
+            Rectangle{ center.x + rotatedOffset.x * mastOffset, center.y + rotatedOffset.y * mastOffset, 6, 15 },
+            Vector2{ 3, 0 },
+            rot,
+            BROWN
+        );
+
+        // Mast
+        DrawLineEx(
+            Vector2{ center.x + rotatedOffset.x * mastOffset, center.y + rotatedOffset.y * mastOffset },
+            Vector2{ center.x + rotatedOffset.x * mastOffset, center.y + rotatedOffset.y * mastOffset - 40 },
+            3.0f,
+            BROWN
+        );
+
+        // Triangle sail
+        DrawTriangle(
+            Vector2{ center.x + rotatedOffset.x * mastOffset, center.y + rotatedOffset.y * mastOffset - 40 },
+            Vector2{ center.x + rotatedOffset.x * (mastOffset - 15), center.y + rotatedOffset.y * mastOffset },
+            Vector2{ center.x + rotatedOffset.x * (mastOffset + 15), center.y + rotatedOffset.y * mastOffset },
+            WHITE
+        );
+    }
+
+    // British Naval Ensign
+    DrawRectanglePro(
+        Rectangle{ center.x - rotatedOffset.x * 25, center.y - rotatedOffset.y * 25 - 35, 20, 15 },
         Vector2{ 0, 0 },
         rot,
-        BLUE
+        RED
     );
 
     DrawShipDetails();
@@ -115,17 +125,14 @@ void NavyShip::Shoot() {
             position.x + cosf(rotation - PI / 2) * 10,
             position.y + sinf(rotation - PI / 2) * 10
         };
-
         Vector2 rightCannonPos = {
             position.x + cosf(rotation + PI / 2) * 10,
             position.y + sinf(rotation + PI / 2) * 10
         };
-
         Vector2 leftVelocity = {
             cosf(rotation - PI / 2) * 5.0f,
             sinf(rotation - PI / 2) * 5.0f
         };
-
         Vector2 rightVelocity = {
             cosf(rotation + PI / 2) * 5.0f,
             sinf(rotation + PI / 2) * 5.0f
@@ -147,7 +154,6 @@ void NavyShip::Shoot() {
 
         cannonballs.push_back(leftBall);
         cannonballs.push_back(rightBall);
-
         reloadTime = RELOAD_DURATION;
     }
 }
@@ -156,7 +162,6 @@ void NavyShip::SetSteering(float value) {
     if (value != 0) {
         float rotationSpeed = value * PI * TURN_RATE * GetFrameTime() * 2.0f;
         rotation += rotationSpeed;
-
         while (rotation > 2 * PI) rotation -= 2 * PI;
         while (rotation < 0) rotation += 2 * PI;
     }
@@ -181,10 +186,8 @@ void NavyShip::UpdateCannonballs() {
         if (ball.active) {
             ball.pos.x += ball.velocity.x;
             ball.pos.y += ball.velocity.y;
-
             ball.distanceTraveled += sqrtf(ball.velocity.x * ball.velocity.x +
                 ball.velocity.y * ball.velocity.y);
-
             if (ball.pos.x < 0 || ball.pos.x > 1200 ||
                 ball.pos.y < 0 || ball.pos.y > 1200 ||
                 ball.distanceTraveled > 500.0f) {
@@ -195,13 +198,12 @@ void NavyShip::UpdateCannonballs() {
 }
 
 void NavyShip::DrawShipDetails() {
-    DrawRectangle(position.x - 20, position.y - 25, 40, 5, RED);
-    DrawRectangle(position.x - 20, position.y - 25,
-        (int)(40 * (health / maxHealth)), 5, GREEN);
-
+    DrawRectangle(static_cast<int>(position.x - 20), static_cast<int>(position.y - 25), 40, 5, RED);
+    DrawRectangle(static_cast<int>(position.x - 20), static_cast<int>(position.y - 25),
+        static_cast<int>(40 * (health / maxHealth)), 5, GREEN);
     for (const auto& ball : cannonballs) {
         if (ball.active) {
-            DrawCircle((int)ball.pos.x, (int)ball.pos.y, 3, BLACK);
+            DrawCircle(static_cast<int>(ball.pos.x), static_cast<int>(ball.pos.y), 3, BLACK);
         }
     }
 }

@@ -11,7 +11,6 @@ void PirateShip::Update() {
         sinkProgress += 0.01f;
         if (sinkProgress >= 1.0f) return;
     }
-
     UpdateAIMovement();
     UpdatePhysics();
     UpdateCannonballs();
@@ -19,118 +18,115 @@ void PirateShip::Update() {
 
 void PirateShip::UpdateAIMovement() {
     circleTime += GetFrameTime() * CIRCLE_SPEED;
-
-    // Calculate next position on circle
     float nextCircleTime = circleTime + GetFrameTime() * CIRCLE_SPEED;
     Vector2 nextPosition;
     nextPosition.x = ISLAND_CENTER.x + cosf(nextCircleTime) * CIRCLE_RADIUS;
     nextPosition.y = ISLAND_CENTER.y + sinf(nextCircleTime) * CIRCLE_RADIUS;
-
-    // Calculate direction to face movement
     float dx = nextPosition.x - position.x;
     float dy = nextPosition.y - position.y;
     targetRotation = atan2f(dy, dx);
-
-    // Set constant speed for smooth movement
-    targetSpeed = MAX_SPEED * 0.5f; // Half max speed for steady circular motion
-
-    // Update position directly for perfect circle
+    targetSpeed = MAX_SPEED * 0.5f;
     position.x = ISLAND_CENTER.x + cosf(circleTime) * CIRCLE_RADIUS;
     position.y = ISLAND_CENTER.y + sinf(circleTime) * CIRCLE_RADIUS;
 }
 
 void PirateShip::UpdatePhysics() {
     float deltaTime = GetFrameTime();
-
-    // Angular physics
     float rotationDiff = targetRotation - rotation;
     while (rotationDiff > PI) rotationDiff -= 2 * PI;
     while (rotationDiff < -PI) rotationDiff += 2 * PI;
-
     float targetAngularVel = rotationDiff * TURN_RATE;
     angularVelocity = lerp(angularVelocity, targetAngularVel, ANGULAR_DAMPING * deltaTime);
     rotation += angularVelocity * deltaTime;
-
-    // Linear physics
     float targetVelocityMagnitude = targetSpeed * MAX_SPEED;
     Vector2 targetVelocity = {
         cosf(rotation) * targetVelocityMagnitude,
         sinf(rotation) * targetVelocityMagnitude
     };
-
     velocity.x = lerp(velocity.x, targetVelocity.x, ACCELERATION * deltaTime);
     velocity.y = lerp(velocity.y, targetVelocity.y, ACCELERATION * deltaTime);
-
     velocity.x *= LINEAR_DAMPING;
     velocity.y *= LINEAR_DAMPING;
-
     position.x += velocity.x * deltaTime;
     position.y += velocity.y * deltaTime;
 }
 
 void PirateShip::Draw() {
-    Color mainColor = isSinking ?
-        ColorAlpha(MAROON, 1.0f - sinkProgress) : MAROON;
-
+    Color mainColor = isSinking ? ColorAlpha(MAROON, 1.0f - sinkProgress) : MAROON;
     Vector2 center = position;
     float rot = rotation * RAD2DEG;
+    Vector2 rotatedOffset = { cosf(rotation), sinf(rotation) };
 
-    // Enhanced hull
+    // Main hull
     DrawRectanglePro(
-        Rectangle{ center.x, center.y, 50, 25 },
-        Vector2{ 25, 12.5f },
+        Rectangle{ center.x, center.y, 70, 25 },
+        Vector2{ 35, 12.5f },
         rot,
         mainColor
     );
 
-    // Deck details
-    Vector2 rotatedOffset;
-    rotatedOffset.x = cosf(rotation);
-    rotatedOffset.y = sinf(rotation);
-
-    // Cannon ports
-    for (int i = -1; i <= 1; i++) {
-        Vector2 portPos = {
-            center.x + rotatedOffset.y * i * 8,
-            center.y - rotatedOffset.x * i * 8
-        };
-        DrawCircle(portPos.x, portPos.y, 2, BLACK);
-    }
-
-    // Main mast
-    DrawLineEx(
-        Vector2{ center.x, center.y },
-        Vector2{ center.x, center.y - 35 },
-        3.0f,
+    // Sharp bow with decorative figurehead
+    Vector2 bowTip = {
+        center.x + rotatedOffset.x * 40,
+        center.y + rotatedOffset.y * 40
+    };
+    DrawTriangle(
+        Vector2{ center.x + rotatedOffset.x * 35, center.y + rotatedOffset.y * 35 - 12 },
+        Vector2{ center.x + rotatedOffset.x * 35, center.y + rotatedOffset.y * 35 + 12 },
+        bowTip,
         DARKBROWN
     );
 
-    // Pirate sail with skull
-    DrawTriangle(
-        Vector2{ center.x, center.y - 35 },
-        Vector2{ center.x - 20, center.y },
-        Vector2{ center.x + 20, center.y },
+    // Ornate stern castle
+    DrawRectanglePro(
+        Rectangle{ center.x - rotatedOffset.x * 30, center.y - rotatedOffset.y * 30, 30, 35 },
+        Vector2{ 15, 17.5f },
+        rot,
+        DARKBROWN
+    );
+
+    // Two tall masts with ragged sails
+    for (int i = -1; i <= 1; i += 2) {
+        float mastOffset = i * 20;
+        DrawLineEx(
+            Vector2{ center.x + rotatedOffset.x * mastOffset, center.y + rotatedOffset.y * mastOffset },
+            Vector2{ center.x + rotatedOffset.x * mastOffset, center.y + rotatedOffset.y * mastOffset - 45 },
+            4.0f,
+            DARKBROWN
+        );
+
+        // Triangular pirate sails
+        DrawTriangle(
+            Vector2{ center.x + rotatedOffset.x * mastOffset, center.y + rotatedOffset.y * mastOffset - 45 },
+            Vector2{ center.x + rotatedOffset.x * (mastOffset - 25), center.y + rotatedOffset.y * mastOffset - 10 },
+            Vector2{ center.x + rotatedOffset.x * (mastOffset + 25), center.y + rotatedOffset.y * mastOffset - 10 },
+            BLACK
+        );
+    }
+
+    // Jolly Roger flag
+    DrawRectanglePro(
+        Rectangle{ center.x, center.y - 50, 25, 20 },
+        Vector2{ 12.5f, 0 },
+        rot,
         BLACK
     );
 
-    // Skull emblem
+    // Skull on flag
     Vector2 skullPos = {
         center.x,
-        center.y - 20
+        center.y - 40
     };
-    DrawCircle(skullPos.x, skullPos.y, 5, WHITE);
-    DrawCircle(skullPos.x - 2, skullPos.y - 1, 1, BLACK);
-    DrawCircle(skullPos.x + 2, skullPos.y - 1, 1, BLACK);
+    DrawCircle(skullPos.x, skullPos.y, 6, WHITE);
+    DrawCircle(skullPos.x - 2, skullPos.y - 1, 2, BLACK);
+    DrawCircle(skullPos.x + 2, skullPos.y - 1, 2, BLACK);
     DrawLine(skullPos.x - 3, skullPos.y + 2, skullPos.x + 3, skullPos.y + 2, BLACK);
 
     DrawShipDetails();
 }
 
-
 void PirateShip::DrawShipDetails() {
     Vector2 center = position;
-
-    // Health bar
     float healthBarWidth = 40;
     float healthBarHeight = 5;
     float healthPercentage = health / maxHealth;
@@ -151,7 +147,6 @@ void PirateShip::DrawShipDetails() {
         GREEN
     );
 
-    // Ship name
     const char* name = "Pirate";
     DrawText(name,
         static_cast<int>(center.x - MeasureText(name, 20) / 2),
@@ -159,7 +154,6 @@ void PirateShip::DrawShipDetails() {
         20,
         WHITE);
 
-    // Reload indicator
     if (reloadTime > 0.0f) {
         char reloadText[32];
         sprintf_s(reloadText, sizeof(reloadText), "Reload: %.1f", reloadTime);
@@ -170,7 +164,6 @@ void PirateShip::DrawShipDetails() {
             YELLOW);
     }
 
-    // Draw active cannonballs
     for (const auto& ball : cannonballs) {
         if (ball.active) {
             DrawCircle(
@@ -220,7 +213,6 @@ void PirateShip::UpdateCannonballs() {
             Vector2 oldPos = ball.pos;
             ball.pos.x += ball.velocity.x;
             ball.pos.y += ball.velocity.y;
-
             float dx = ball.pos.x - oldPos.x;
             float dy = ball.pos.y - oldPos.y;
             ball.distanceTraveled += sqrtf(dx * dx + dy * dy);
