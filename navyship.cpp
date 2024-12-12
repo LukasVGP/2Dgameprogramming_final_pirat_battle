@@ -22,10 +22,8 @@ void NavyShip::Update() {
         sinkProgress += 0.01f;
         return;
     }
-
     UpdatePhysics();
     UpdateCannonballs();
-
     if (reloadTime > 0) {
         reloadTime--;
     }
@@ -34,7 +32,6 @@ void NavyShip::Update() {
 void NavyShip::UpdatePhysics() {
     float deltaTime = GetFrameTime();
 
-    // Linear movement
     float targetVelX = cosf(rotation) * targetSpeed;
     float targetVelY = sinf(rotation) * targetSpeed;
 
@@ -53,7 +50,8 @@ void NavyShip::UpdatePhysics() {
 
 void NavyShip::Draw() {
     Color shipColor = isSinking ?
-        ColorAlpha(WHITE, 1.0f - sinkProgress) : WHITE;
+        ColorAlpha(DARKBLUE, 1.0f - sinkProgress) : DARKBLUE;
+    Color sailColor = WHITE;
 
     Vector2 center = position;
     float rot = rotation * RAD2DEG;
@@ -77,6 +75,7 @@ void NavyShip::Draw() {
         2.0f,
         BROWN
     );
+
     DrawLineEx(
         Vector2{ center.x + rotatedOffset.x * 10, center.y + rotatedOffset.y * 10 },
         Vector2{ center.x + rotatedOffset.x * 10, center.y + rotatedOffset.y * 10 - 30 },
@@ -84,18 +83,19 @@ void NavyShip::Draw() {
         BROWN
     );
 
-    // Navy sails
+    // White sails
     DrawTriangle(
         Vector2{ center.x - rotatedOffset.x * 10, center.y - rotatedOffset.y * 10 - 30 },
         Vector2{ center.x - rotatedOffset.x * 25, center.y - rotatedOffset.y * 10 },
         Vector2{ center.x - rotatedOffset.x * 5, center.y - rotatedOffset.y * 10 },
-        WHITE
+        sailColor
     );
+
     DrawTriangle(
         Vector2{ center.x + rotatedOffset.x * 10, center.y + rotatedOffset.y * 10 - 30 },
         Vector2{ center.x + rotatedOffset.x * 25, center.y + rotatedOffset.y * 10 },
         Vector2{ center.x + rotatedOffset.x * 5, center.y + rotatedOffset.y * 10 },
-        WHITE
+        sailColor
     );
 
     // Navy flag
@@ -109,13 +109,13 @@ void NavyShip::Draw() {
     DrawShipDetails();
 }
 
-
 void NavyShip::Shoot() {
     if (reloadTime <= 0) {
         Vector2 leftCannonPos = {
             position.x + cosf(rotation - PI / 2) * 10,
             position.y + sinf(rotation - PI / 2) * 10
         };
+
         Vector2 rightCannonPos = {
             position.x + cosf(rotation + PI / 2) * 10,
             position.y + sinf(rotation + PI / 2) * 10
@@ -125,6 +125,7 @@ void NavyShip::Shoot() {
             cosf(rotation - PI / 2) * 5.0f,
             sinf(rotation - PI / 2) * 5.0f
         };
+
         Vector2 rightVelocity = {
             cosf(rotation + PI / 2) * 5.0f,
             sinf(rotation + PI / 2) * 5.0f
@@ -152,12 +153,10 @@ void NavyShip::Shoot() {
 }
 
 void NavyShip::SetSteering(float value) {
-    // Double the rotation speed and only rotate when wheel is turned
     if (value != 0) {
         float rotationSpeed = value * PI * TURN_RATE * GetFrameTime() * 2.0f;
         rotation += rotationSpeed;
 
-        // Keep rotation within 0 to 2*PI range
         while (rotation > 2 * PI) rotation -= 2 * PI;
         while (rotation < 0) rotation += 2 * PI;
     }
@@ -165,8 +164,8 @@ void NavyShip::SetSteering(float value) {
 
 void NavyShip::SetThrottle(float value) {
     float scaledSpeed = (value > 0) ?
-        (value * 0.2f * MAX_SPEED) :  // 20% at full throttle
-        (value * 0.1f * MAX_SPEED);   // 10% at normal speed
+        (value * 0.2f * MAX_SPEED) :
+        (value * 0.1f * MAX_SPEED);
     targetSpeed = scaledSpeed;
 }
 
@@ -182,6 +181,7 @@ void NavyShip::UpdateCannonballs() {
         if (ball.active) {
             ball.pos.x += ball.velocity.x;
             ball.pos.y += ball.velocity.y;
+
             ball.distanceTraveled += sqrtf(ball.velocity.x * ball.velocity.x +
                 ball.velocity.y * ball.velocity.y);
 

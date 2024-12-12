@@ -3,84 +3,112 @@
 #include <cmath>
 
 GameLogic::GameLogic() :
-    playerShip(Vector2{ 600.0f, 300.0f }),
+    playerShip(Vector2{ 1000.0f, 600.0f }),
     enemyShip(),
     ui(),
-    env() {
+    env(),
+    menu(),
+    currentState(GameState::MENU) {
 }
 
 void GameLogic::Update() {
-    ui.Update();
-    float steering = ui.GetSteering();
-    float throttle = ui.GetThrottle();
-    bool firePressed = ui.IsFirePressed();
+    switch (currentState) {
+    case GameState::MENU:
+        if (menu.IsStartPressed()) {
+            currentState = GameState::PLAYING;
+        }
+        break;
 
-    playerShip.SetSteering(steering);
-    playerShip.SetThrottle(throttle);
-    if (firePressed) {
-        playerShip.Shoot();
-    }
+    case GameState::PLAYING: {
+        ui.Update();
+        float steering = ui.GetSteering();
+        float throttle = ui.GetThrottle();
+        bool firePressed = ui.IsFirePressed();
 
-    playerShip.Update();
-    enemyShip.Update();
+        playerShip.SetSteering(steering);
+        playerShip.SetThrottle(throttle);
+        if (firePressed) {
+            playerShip.Shoot();
+        }
 
-    const auto& playerBalls = playerShip.GetCannonballs();
-    for (const auto& ball : playerBalls) {
-        if (ball.active) {
-            if (CheckCollisionCircleRec(
-                ball.pos, 3,
-                Rectangle{
-                    enemyShip.GetPosition().x - 20,
-                    enemyShip.GetPosition().y - 10,
-                    40, 20
-                })) {
-                enemyShip.TakeDamage(35.0f / 3.0f);
+        playerShip.Update();
+        enemyShip.Update();
+
+        const auto& playerBalls = playerShip.GetCannonballs();
+        for (const auto& ball : playerBalls) {
+            if (ball.active) {
+                if (CheckCollisionCircleRec(
+                    ball.pos, 3,
+                    Rectangle{
+                        enemyShip.GetPosition().x - 20,
+                        enemyShip.GetPosition().y - 10,
+                        40, 20
+                    })) {
+                    enemyShip.TakeDamage(35.0f / 3.0f);
+                }
             }
         }
-    }
 
-    const auto& enemyBalls = enemyShip.GetCannonballs();
-    for (const auto& ball : enemyBalls) {
-        if (ball.active) {
-            if (CheckCollisionCircleRec(
-                ball.pos, 3,
-                Rectangle{
-                    playerShip.GetPosition().x - 20,
-                    playerShip.GetPosition().y - 10,
-                    40, 20
-                })) {
-                playerShip.TakeDamage(35.0f / 3.0f);
+        const auto& enemyBalls = enemyShip.GetCannonballs();
+        for (const auto& ball : enemyBalls) {
+            if (ball.active) {
+                if (CheckCollisionCircleRec(
+                    ball.pos, 3,
+                    Rectangle{
+                        playerShip.GetPosition().x - 20,
+                        playerShip.GetPosition().y - 10,
+                        40, 20
+                    })) {
+                    playerShip.TakeDamage(35.0f / 3.0f);
+                }
             }
         }
+
+        if (playerShip.IsSinking() || enemyShip.IsSinking()) {
+            currentState = GameState::GAMEOVER;
+        }
+        break;
+    }
+
+    case GameState::GAMEOVER:
+        if (menu.IsRestartPressed()) {
+            Reset();
+            currentState = GameState::PLAYING;
+        }
+        break;
     }
 }
 
 void GameLogic::Draw() {
     ClearBackground(BLUE);
-    DrawRectangleLines(0, 0, 1200, 1200, WHITE);
 
-    env.Draw();
+    switch (currentState) {
+    case GameState::MENU:
+        menu.Draw();
+        break;
 
-    if (!playerShip.IsSinking()) {
-        playerShip.Draw();
+    case GameState::PLAYING:
+        env.Draw();
+        if (!playerShip.IsSinking()) playerShip.Draw();
+        if (!enemyShip.IsSinking()) enemyShip.Draw();
+        ui.Draw();
+
+        DrawFPS(10, 10);
+        DrawText("Use WHEEL to steer", 10, 30, 20, WHITE);
+        DrawText("Use LEVER to control speed", 10, 50, 20, WHITE);
+        DrawText("FIRE button for broadsides", 10, 70, 20, WHITE);
+        break;
+
+    case GameState::GAMEOVER:
+        env.Draw();
+        if (!playerShip.IsSinking()) playerShip.Draw();
+        if (!enemyShip.IsSinking()) enemyShip.Draw();
+        menu.DrawGameOver(!playerShip.IsSinking());
+        break;
     }
+}
 
-    if (!enemyShip.IsSinking()) {
-        enemyShip.Draw();
-    }
-
-    ui.Draw();
-
-    DrawFPS(10, 10);
-    DrawText("Use WHEEL to steer", 10, 30, 20, WHITE);
-    DrawText("Use LEVER to control speed", 10, 50, 20, WHITE);
-    DrawText("FIRE button for broadsides", 10, 70, 20, WHITE);
-
-    if (playerShip.IsSinking()) {
-        DrawText("DEFEAT - Pirates Win!", 500, 600, 40, RED);
-    }
-
-    if (enemyShip.IsSinking()) {
-        DrawText("VICTORY - Navy Wins!", 500, 600, 40, GREEN);
-    }
+void GameLogic::Reset() {
+    playerShip = NavyShip(Vector2{ 1000.0f, 600.0f });
+    enemyShip = PirateShip();
 }
