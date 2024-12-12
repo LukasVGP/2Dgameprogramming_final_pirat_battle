@@ -1,9 +1,6 @@
-﻿  game_logic.cpp
-  navyship.cpp
-C:\Users\hopli\Documents\GitHub\2Dgameprogramming_final_pirat_battle\navyship.cpp(198,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\hopli\Documents\GitHub\2Dgameprogramming_final_pirat_battle\navyship.cpp(198,30): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\hopli\Documents\GitHub\2Dgameprogramming_final_pirat_battle\navyship.cpp(199,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\hopli\Documents\GitHub\2Dgameprogramming_final_pirat_battle\navyship.cpp(199,30): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+﻿  environment.cpp
+  game_logic.cpp
+  main.cpp
   Generating Code...
   2Dgameprogramming_final_pirat_battle.vcxproj -> C:\Users\hopli\Documents\GitHub\2Dgameprogramming_final_pirat_battle\x64\Debug\2Dgameprogramming_final_pirat_battle.exe
   'pwsh.exe' is not recognized as an internal or external command,
