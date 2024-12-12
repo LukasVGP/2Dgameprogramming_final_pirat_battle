@@ -23,13 +23,15 @@ void UI::Update() {
 
 void UI::Draw() {
     DrawRectangleRounded({ 1210, 10, 280, 1180 }, 0.1f, 10, ColorAlpha(GRAY, 0.8f));
-    DrawRectangleRoundedLines({ 1210, 10, 280, 1180 }, 0.1f, 10, 2, DARKGRAY);
+    DrawRectangleRounded({ 1210, 10, 280, 1180 }, 0.1f, 10, DARKGRAY); // Replaced DrawRectangleRoundedLines
 
     DrawText("SHIP CONTROLS", 1265, 30, 24, DARKGRAY);
     DrawLine(1230, 60, 1470, 60, DARKGRAY);
 
-    Vector2 wheelCenter = { wheelBounds.x + wheelBounds.width / 2,
-                         wheelBounds.y + wheelBounds.height / 2 };
+    Vector2 wheelCenter = {
+        wheelBounds.x + wheelBounds.width / 2,
+        wheelBounds.y + wheelBounds.height / 2
+    };
 
     DrawCircle(wheelCenter.x, wheelCenter.y, wheelBounds.width / 2, DARKGRAY);
     DrawCircle(wheelCenter.x, wheelCenter.y, wheelBounds.width / 2 - 10, LIGHTGRAY);
@@ -66,27 +68,22 @@ void UI::Draw() {
     DrawText("STEERING", wheelCenter.x - 40, wheelBounds.y + wheelBounds.height + 10, 20, DARKGRAY);
 
     DrawRectangleRounded(leverBounds, 0.5f, 8, DARKGRAY);
-    DrawRectangleRoundedLines(leverBounds, 0.5f, 8, 2, BLACK);
+    DrawRectangleRounded(leverBounds, 0.5f, 8, BLACK); // Replaced DrawRectangleRoundedLines
 
     float leverY = leverBounds.y + leverBounds.height * (1 - throttle);
-    DrawRectangleRounded(
-        { leverBounds.x - 10, leverY - 10, 70, 20 },
-        0.5f, 8, RED
-    );
-    DrawRectangleRoundedLines(
-        { leverBounds.x - 10, leverY - 10, 70, 20 },
-        0.5f, 8, 2, MAROON
-    );
+    Rectangle leverHandle = { leverBounds.x - 10, leverY - 10, 70, 20 };
+
+    DrawRectangleRounded(leverHandle, 0.5f, 8, RED);
+    DrawRectangleRounded(leverHandle, 0.5f, 8, MAROON); // Replaced DrawRectangleRoundedLines
 
     DrawText("THROTTLE", leverBounds.x - 20, leverBounds.y + leverBounds.height + 10, 20, DARKGRAY);
 
     Color fireColor = firePressed ? RED : MAROON;
     DrawRectangleRounded(fireBounds, 0.2f, 8, fireColor);
-    DrawRectangleRoundedLines(fireBounds, 0.2f, 8, 2, BLACK);
+    DrawRectangleRounded(fireBounds, 0.2f, 8, BLACK); // Replaced DrawRectangleRoundedLines
 
     DrawText("FIRE!", fireBounds.x + 37, fireBounds.y + 37, 30, BLACK);
     DrawText("FIRE!", fireBounds.x + 35, fireBounds.y + 35, 30, WHITE);
-
     DrawText("BROADSIDE READY", fireBounds.x + 10, fireBounds.y + 70, 15,
         firePressed ? DARKGRAY : GREEN);
 }
