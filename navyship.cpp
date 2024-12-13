@@ -3,8 +3,8 @@
 #include "raymath.h"
 
 NavyShip::NavyShip(Vector2 startPos) :
-    position(startPos),
-    rotation(0.0f),
+    position({ 800.0f, 600.0f }),
+    rotation(PI),
     targetRotation(0.0f),
     targetPosition(startPos),
     velocity({ 0.0f, 0.0f }),
@@ -80,8 +80,16 @@ void NavyShip::Draw() {
 
     // Three masts with triangle sails
     float mastSpacing = 20.0f;
-    for (int i = -1; i <= 1; i++) {
+    for (int i = 1; i >= -1; i--) {
         float mastOffset = i * mastSpacing;
+
+        // Triangle sail
+        DrawTriangle(
+            Vector2{ center.x + rotatedOffset.x * mastOffset, center.y + rotatedOffset.y * mastOffset - 40 },
+            Vector2{ center.x + rotatedOffset.x * (mastOffset + 15), center.y + rotatedOffset.y * mastOffset },
+            Vector2{ center.x + rotatedOffset.x * (mastOffset - 15), center.y + rotatedOffset.y * mastOffset },
+            WHITE
+        );
 
         // Brown mast base
         DrawRectanglePro(
@@ -97,14 +105,6 @@ void NavyShip::Draw() {
             Vector2{ center.x + rotatedOffset.x * mastOffset, center.y + rotatedOffset.y * mastOffset - 40 },
             3.0f,
             BROWN
-        );
-
-        // Triangle sail
-        DrawTriangle(
-            Vector2{ center.x + rotatedOffset.x * mastOffset, center.y + rotatedOffset.y * mastOffset - 40 },
-            Vector2{ center.x + rotatedOffset.x * (mastOffset - 15), center.y + rotatedOffset.y * mastOffset },
-            Vector2{ center.x + rotatedOffset.x * (mastOffset + 15), center.y + rotatedOffset.y * mastOffset },
-            WHITE
         );
     }
 
@@ -215,3 +215,4 @@ float NavyShip::Clamp(float value, float min, float max) {
 float NavyShip::lerp(float start, float end, float amount) {
     return start + amount * (end - start);
 }
+

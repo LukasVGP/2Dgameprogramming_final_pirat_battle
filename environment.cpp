@@ -27,19 +27,94 @@ void Environment::DrawOcean() {
 }
 
 void Environment::DrawPirateIsland() {
-    DrawCircle(200, 600, 80, BROWN);
-    DrawRectangle(160, 540, 80, 20, DARKBROWN);
-    DrawRectangle(180, 520, 20, 40, DARKGRAY);
-    DrawRectangle(185, 480, 30, 20, BLACK);
-    DrawCircle(200, 490, 5, WHITE);
-    DrawLine(195, 495, 205, 495, WHITE);
+    // Main island shape
+    Vector2 center = { 200, 600 };
+
+    // Base island shape (irregular)
+    Color sandColor = { 210, 180, 140, 255 };
+    DrawCircle(center.x, center.y, 100, sandColor);
+    DrawCircle(center.x - 40, center.y + 20, 50, sandColor);
+    DrawCircle(center.x + 30, center.y - 30, 60, sandColor);
+
+    // Rocky terrain
+    Color rockColor = { 139, 69, 19, 255 };
+    DrawCircle(center.x - 20, center.y - 10, 40, rockColor);
+    DrawCircle(center.x + 10, center.y + 15, 35, rockColor);
+
+    // Volcano
+    DrawTriangle(
+        Vector2{ center.x - 40, center.y - 20 },
+        Vector2{ center.x + 40, center.y - 20 },
+        Vector2{ center.x, center.y - 80 },
+        DARKGRAY
+    );
+
+    // Volcano crater
+    DrawCircle(center.x, center.y - 70, 15, RED);
+    DrawCircle(center.x, center.y - 70, 10, ORANGE);
+
+    // Lava streams
+    DrawLineEx(
+        Vector2{ center.x, center.y - 60 },
+        Vector2{ center.x - 20, center.y - 30 },
+        3,
+        RED
+    );
+    DrawLineEx(
+        Vector2{ center.x, center.y - 60 },
+        Vector2{ center.x + 15, center.y - 35 },
+        3,
+        ORANGE
+    );
 }
 
 void Environment::DrawNavyIsland() {
-    DrawCircle(1000, 600, 80, GREEN);
-    DrawRectangle(960, 540, 100, 30, DARKBLUE);
-    DrawRectangle(980, 520, 20, 40, GRAY);
-    DrawRectangle(985, 480, 30, 20, DARKBLUE);
-    DrawRectangle(995, 480, 10, 20, RED);
-    DrawRectangle(985, 485, 30, 10, RED);
+    // Main island shape
+    Vector2 center = { 1000, 600 };
+
+    // Base island shape (irregular)
+    Color grassColor = { 34, 139, 34, 255 };
+    DrawCircle(center.x, center.y, 100, DARKGREEN);
+    DrawCircle(center.x - 30, center.y - 20, 60, grassColor);
+    DrawCircle(center.x + 40, center.y + 30, 50, grassColor);
+
+    // Forest
+    for (int i = 0; i < 15; i++) {
+        float offsetX = sinf(i * 1.0f) * 60;
+        float offsetY = cosf(i * 1.5f) * 60;
+
+        // Tree trunk
+        DrawRectangle(
+            center.x + offsetX - 5,
+            center.y + offsetY - 20,
+            10,
+            20,
+            BROWN
+        );
+
+        // Tree foliage
+        DrawCircle(
+            center.x + offsetX,
+            center.y + offsetY - 30,
+            15,
+            GREEN
+        );
+        DrawCircle(
+            center.x + offsetX - 8,
+            center.y + offsetY - 25,
+            12,
+            GREEN
+        );
+        DrawCircle(
+            center.x + offsetX + 8,
+            center.y + offsetY - 25,
+            12,
+            GREEN
+        );
+    }
+
+    // Naval fort
+    DrawRectangle(center.x - 20, center.y - 40, 40, 30, GRAY);
+    DrawRectangle(center.x - 25, center.y - 45, 50, 10, DARKGRAY);
+    DrawRectangle(center.x - 15, center.y - 50, 30, 5, LIGHTGRAY);
 }
