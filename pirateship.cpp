@@ -3,7 +3,8 @@
 #include <algorithm>
 
 PirateShip::PirateShip() {
-    position = ISLAND_CENTER;
+    position.x = ISLAND_CENTER.x + CIRCLE_RADIUS;
+    position.y = ISLAND_CENTER.y;
 }
 
 void PirateShip::Update() {
@@ -18,37 +19,60 @@ void PirateShip::Update() {
 
 void PirateShip::UpdateAIMovement() {
     circleTime += GetFrameTime() * CIRCLE_SPEED;
-    float nextCircleTime = circleTime + GetFrameTime() * CIRCLE_SPEED;
-    Vector2 nextPosition;
-    nextPosition.x = ISLAND_CENTER.x + cosf(nextCircleTime) * CIRCLE_RADIUS;
-    nextPosition.y = ISLAND_CENTER.y + sinf(nextCircleTime) * CIRCLE_RADIUS;
-    float dx = nextPosition.x - position.x;
-    float dy = nextPosition.y - position.y;
-    targetRotation = atan2f(dy, dx);
+
+    // Calculate next position on circle
+    Vector2 nextPos;
+    nextPos.x = ISLAND_CENTER.x + cosf(circleTime + 0.1f) * CIRCLE_RADIUS;
+    nextPos.y = ISLAND_CENTER.y + sinf(circleTime + 0.1f) * CIRCLE_RADIUS;
+
+    // Calculate current target position
+    Vector2 targetPos;
+    targetPos.x = ISLAND_CENTER.x + cosf(circleTime) * CIRCLE_RADIUS;
+    targetPos.y = ISLAND_CENTER.y + sinf(circleTime) * CIRCLE_RADIUS;
+
+    // Calculate direction to next position for rotation
+    float dx = nextPos.x - position.x;
+    float dy = nextPos.y - position.y;
+    targetRotation = atan2f(dy, dx);  // Direct angle calculation
+
+    // Set constant speed for continuous movement
     targetSpeed = MAX_SPEED * 0.5f;
-    position.x = ISLAND_CENTER.x + cosf(circleTime) * CIRCLE_RADIUS;
-    position.y = ISLAND_CENTER.y + sinf(circleTime) * CIRCLE_RADIUS;
+
+    // Move towards target position
+    position = targetPos;
 }
 
 void PirateShip::UpdatePhysics() {
     float deltaTime = GetFrameTime();
+
+    // Update rotation
     float rotationDiff = targetRotation - rotation;
     while (rotationDiff > PI) rotationDiff -= 2 * PI;
     while (rotationDiff < -PI) rotationDiff += 2 * PI;
     float targetAngularVel = rotationDiff * TURN_RATE;
     angularVelocity = lerp(angularVelocity, targetAngularVel, ANGULAR_DAMPING * deltaTime);
     rotation += angularVelocity * deltaTime;
+
+    // Calculate forward direction based on rotation
+    Vector2 forwardDir = {
+        cosf(rotation),
+        sinf(rotation)
+    };
+
+    // Apply velocity in the forward direction
     float targetVelocityMagnitude = targetSpeed * MAX_SPEED;
     Vector2 targetVelocity = {
-        cosf(rotation) * targetVelocityMagnitude,
-        sinf(rotation) * targetVelocityMagnitude
+        forwardDir.x * targetVelocityMagnitude,
+        forwardDir.y * targetVelocityMagnitude
     };
+
+    // Smoothly interpolate current velocity towards target velocity
     velocity.x = lerp(velocity.x, targetVelocity.x, ACCELERATION * deltaTime);
     velocity.y = lerp(velocity.y, targetVelocity.y, ACCELERATION * deltaTime);
+
+    // Apply damping
     velocity.x *= LINEAR_DAMPING;
     velocity.y *= LINEAR_DAMPING;
-    position.x += velocity.x * deltaTime;
-    position.y += velocity.y * deltaTime;
 }
 
 void PirateShip::Draw() {
