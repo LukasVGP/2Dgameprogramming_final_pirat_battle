@@ -17,6 +17,10 @@ public:
     Vector2 GetPosition() const { return position; }
     bool IsSinking() const { return isSinking; }
     const std::vector<Cannonball>& GetCannonballs() const { return cannonballs; }
+    void SetCannonReadyState(bool left, bool right) {
+        canFireLeft = left;
+        canFireRight = right;
+    }
 
 private:
     void DrawShipDetails();
@@ -36,6 +40,8 @@ private:
     bool isSinking = false;
     float sinkProgress = 0.0f;
     float reloadTime = 0.0f;
+    bool canFireLeft = false;
+    bool canFireRight = false;
 
     // Optimized movement constants
     static constexpr float TURN_RATE = 0.1f;

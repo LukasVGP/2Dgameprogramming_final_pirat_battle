@@ -8,6 +8,7 @@ GameLogic::GameLogic() :
     ui(),
     env(),
     menu(),
+    cannonUI(),
     currentState(GameState::MENU) {
 }
 
@@ -21,14 +22,22 @@ void GameLogic::Update() {
 
     case GameState::PLAYING: {
         ui.Update();
+        cannonUI.Update();
+
         float steering = ui.GetSteering();
         float throttle = ui.GetThrottle();
         bool firePressed = ui.IsFirePressed();
 
         playerShip.SetSteering(steering);
         playerShip.SetThrottle(throttle);
+        playerShip.SetCannonReadyState(
+            cannonUI.IsLeftCannonReady(),
+            cannonUI.IsRightCannonReady()
+        );
+
         if (firePressed) {
             playerShip.Shoot();
+            cannonUI.ResetCannons();
         }
 
         playerShip.Update();
@@ -92,11 +101,12 @@ void GameLogic::Draw() {
         if (!playerShip.IsSinking()) playerShip.Draw();
         if (!enemyShip.IsSinking()) enemyShip.Draw();
         ui.Draw();
+        cannonUI.Draw();
 
         DrawFPS(10, 10);
         DrawText("Use WHEEL to steer", 10, 30, 20, WHITE);
         DrawText("Use LEVER to control speed", 10, 50, 20, WHITE);
-        DrawText("FIRE button for broadsides", 10, 70, 20, WHITE);
+        DrawText("Load cannons and FIRE!", 10, 70, 20, WHITE);
         break;
 
     case GameState::GAMEOVER:
@@ -111,4 +121,5 @@ void GameLogic::Draw() {
 void GameLogic::Reset() {
     playerShip = NavyShip(Vector2{ 1000.0f, 600.0f });
     enemyShip = PirateShip();
+    cannonUI.ResetCannons();
 }

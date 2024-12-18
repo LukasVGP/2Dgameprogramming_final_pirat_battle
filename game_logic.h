@@ -6,6 +6,7 @@
 #include "environment.h"
 #include "menu.h"
 #include "game_states.h"
+#include "cannon_ui.h"
 
 class GameLogic {
 public:
@@ -20,5 +21,6 @@ private:
     UI ui;
     Environment env;
     Menu menu;
+    CannonLoadingUI cannonUI;
     GameState currentState;
 };

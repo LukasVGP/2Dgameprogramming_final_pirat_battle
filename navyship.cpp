@@ -14,7 +14,9 @@ NavyShip::NavyShip(Vector2 startPos) :
     maxHealth(100.0f),
     reloadTime(0),
     isSinking(false),
-    sinkProgress(0.0f) {
+    sinkProgress(0.0f),
+    canFireLeft(false),
+    canFireRight(false) {
 }
 
 void NavyShip::Update() {
@@ -78,12 +80,28 @@ void NavyShip::Draw() {
         DARKBLUE
     );
 
+    // Draw cannons
+    if (canFireLeft) {
+        DrawCircle(
+            center.x + cosf(rotation - PI / 2) * 15,
+            center.y + sinf(rotation - PI / 2) * 15,
+            5,
+            BLACK
+        );
+    }
+    if (canFireRight) {
+        DrawCircle(
+            center.x + cosf(rotation + PI / 2) * 15,
+            center.y + sinf(rotation + PI / 2) * 15,
+            5,
+            BLACK
+        );
+    }
+
     // Three masts with triangle sails
     float mastSpacing = 20.0f;
     for (int i = 1; i >= -1; i--) {
         float mastOffset = i * mastSpacing;
-
-        // Triangle sail
         DrawTriangle(
             Vector2{ center.x + rotatedOffset.x * mastOffset, center.y + rotatedOffset.y * mastOffset - 40 },
             Vector2{ center.x + rotatedOffset.x * (mastOffset + 15), center.y + rotatedOffset.y * mastOffset },
@@ -91,7 +109,6 @@ void NavyShip::Draw() {
             WHITE
         );
 
-        // Brown mast base
         DrawRectanglePro(
             Rectangle{ center.x + rotatedOffset.x * mastOffset, center.y + rotatedOffset.y * mastOffset, 6, 15 },
             Vector2{ 3, 0 },
@@ -99,7 +116,6 @@ void NavyShip::Draw() {
             BROWN
         );
 
-        // Mast
         DrawLineEx(
             Vector2{ center.x + rotatedOffset.x * mastOffset, center.y + rotatedOffset.y * mastOffset },
             Vector2{ center.x + rotatedOffset.x * mastOffset, center.y + rotatedOffset.y * mastOffset - 40 },
@@ -121,40 +137,45 @@ void NavyShip::Draw() {
 
 void NavyShip::Shoot() {
     if (reloadTime <= 0) {
-        Vector2 leftCannonPos = {
-            position.x + cosf(rotation - PI / 2) * 10,
-            position.y + sinf(rotation - PI / 2) * 10
-        };
-        Vector2 rightCannonPos = {
-            position.x + cosf(rotation + PI / 2) * 10,
-            position.y + sinf(rotation + PI / 2) * 10
-        };
-        Vector2 leftVelocity = {
-            cosf(rotation - PI / 2) * 5.0f,
-            sinf(rotation - PI / 2) * 5.0f
-        };
-        Vector2 rightVelocity = {
-            cosf(rotation + PI / 2) * 5.0f,
-            sinf(rotation + PI / 2) * 5.0f
-        };
+        if (canFireLeft) {
+            Vector2 leftCannonPos = {
+                position.x + cosf(rotation - PI / 2) * 10,
+                position.y + sinf(rotation - PI / 2) * 10
+            };
+            Vector2 leftVelocity = {
+                cosf(rotation - PI / 2) * 5.0f,
+                sinf(rotation - PI / 2) * 5.0f
+            };
+            Cannonball leftBall;
+            leftBall.pos = leftCannonPos;
+            leftBall.velocity = leftVelocity;
+            leftBall.rotation = rotation - PI / 2;
+            leftBall.distanceTraveled = 0.0f;
+            leftBall.active = true;
+            cannonballs.push_back(leftBall);
+        }
 
-        Cannonball leftBall;
-        leftBall.pos = leftCannonPos;
-        leftBall.velocity = leftVelocity;
-        leftBall.rotation = rotation - PI / 2;
-        leftBall.distanceTraveled = 0.0f;
-        leftBall.active = true;
+        if (canFireRight) {
+            Vector2 rightCannonPos = {
+                position.x + cosf(rotation + PI / 2) * 10,
+                position.y + sinf(rotation + PI / 2) * 10
+            };
+            Vector2 rightVelocity = {
+                cosf(rotation + PI / 2) * 5.0f,
+                sinf(rotation + PI / 2) * 5.0f
+            };
+            Cannonball rightBall;
+            rightBall.pos = rightCannonPos;
+            rightBall.velocity = rightVelocity;
+            rightBall.rotation = rotation + PI / 2;
+            rightBall.distanceTraveled = 0.0f;
+            rightBall.active = true;
+            cannonballs.push_back(rightBall);
+        }
 
-        Cannonball rightBall;
-        rightBall.pos = rightCannonPos;
-        rightBall.velocity = rightVelocity;
-        rightBall.rotation = rotation + PI / 2;
-        rightBall.distanceTraveled = 0.0f;
-        rightBall.active = true;
-
-        cannonballs.push_back(leftBall);
-        cannonballs.push_back(rightBall);
-        reloadTime = RELOAD_DURATION;
+        if (canFireLeft || canFireRight) {
+            reloadTime = RELOAD_DURATION;
+        }
     }
 }
 
@@ -190,17 +211,22 @@ void NavyShip::UpdateCannonballs() {
                 ball.velocity.y * ball.velocity.y);
             if (ball.pos.x < 0 || ball.pos.x > 1200 ||
                 ball.pos.y < 0 || ball.pos.y > 1200 ||
-                ball.distanceTraveled > 500.0f) {
+                ball.distanceTraveled > MAX_SHOOT_RANGE) {
                 ball.active = false;
             }
         }
     }
+    cannonballs.erase(
+        std::remove_if(cannonballs.begin(), cannonballs.end(),
+            [](const Cannonball& ball) { return !ball.active; }),
+        cannonballs.end());
 }
 
 void NavyShip::DrawShipDetails() {
     DrawRectangle(static_cast<int>(position.x - 20), static_cast<int>(position.y - 25), 40, 5, RED);
     DrawRectangle(static_cast<int>(position.x - 20), static_cast<int>(position.y - 25),
         static_cast<int>(40 * (health / maxHealth)), 5, GREEN);
+
     for (const auto& ball : cannonballs) {
         if (ball.active) {
             DrawCircle(static_cast<int>(ball.pos.x), static_cast<int>(ball.pos.y), 3, BLACK);
@@ -215,4 +241,3 @@ float NavyShip::Clamp(float value, float min, float max) {
 float NavyShip::lerp(float start, float end, float amount) {
     return start + amount * (end - start);
 }
-
