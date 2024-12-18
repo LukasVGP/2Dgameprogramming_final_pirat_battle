@@ -1,18 +1,21 @@
 ﻿  cannon_ui.cpp
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(96,47): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(95,38): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(124,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(123,22): warning C4244: 'argument': conversion from 'const float' to 'int', possible loss of data
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(133,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(132,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(141,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(140,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  navyship.cpp
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\navyship.cpp(87,22): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\navyship.cpp(86,22): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\navyship.cpp(95,22): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\navyship.cpp(94,22): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  Generating Code...
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(122,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(130,22): warning C4244: 'argument': conversion from 'const float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(129,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(137,90): warning C4244: 'argument': conversion from 'const float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(137,46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(137,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(175,52): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(174,22): warning C4244: 'argument': conversion from 'const float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(189,51): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(189,48): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(198,35): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(197,63): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(208,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(207,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(216,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\cannon_ui.cpp(215,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   2Dgameprogramming_final_pirat_battle.vcxproj -> C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\x64\Debug\2Dgameprogramming_final_pirat_battle.exe
   'pwsh.exe' is not recognized as an internal or external command,
   operable program or batch file.

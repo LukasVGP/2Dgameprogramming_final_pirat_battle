@@ -14,7 +14,6 @@ struct CannonUI {
     CannonState state;
     bool isLeftCannon;
     float rotation;
-
     bool isDraggingBall;
     bool isDraggingRamrod;
     Vector2 dragOffset;
@@ -30,6 +29,11 @@ public:
     void ResetCannons();
 
 private:
+    static constexpr float CANNON_SPACING = 150.0f;
+    static constexpr float CANNON_WIDTH = 120.0f;
+    static constexpr float CANNON_HEIGHT = 60.0f;
+    static constexpr float INDICATOR_OFFSET = 20.0f;
+
     void UpdateCannonDragging(CannonUI& cannon);
     void DrawCannon(const CannonUI& cannon);
 

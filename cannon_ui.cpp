@@ -1,32 +1,59 @@
 #include "cannon_ui.h"
 
 CannonLoadingUI::CannonLoadingUI() {
-    // Initialize left cannon
-    leftCannon.bounds = { 1230, 750, 100, 50 };
-    leftCannon.ballStackBounds = { 1230, 810, 30, 60 };
-    leftCannon.ramrodBounds = { 1270, 810, 60, 20 };
+    float startY = 800.0f;
+    float startX = 1350.0f;
+
+    leftCannon.bounds = {
+        startX,
+        startY,
+        CANNON_WIDTH,
+        CANNON_HEIGHT
+    };
+
+    rightCannon.bounds = {
+        startX,
+        startY + CANNON_SPACING,
+        CANNON_WIDTH,
+        CANNON_HEIGHT
+    };
+
+    float stackX = startX + 20.0f;
+    float stackY = startY + (1.5f * CANNON_SPACING);
+
+    leftCannon.ramrodBounds = rightCannon.ramrodBounds = {
+        stackX - 40.0f,
+        startY + CANNON_SPACING - 20.0f,
+        80.0f,
+        20.0f
+    };
+
+    leftCannon.ballStackBounds = rightCannon.ballStackBounds = {
+        stackX,
+        stackY,
+        60.0f,
+        80.0f
+    };
+
     leftCannon.state = CannonState::EMPTY;
     leftCannon.isLeftCannon = true;
-    leftCannon.rotation = 180;
+    leftCannon.rotation = 0;
     leftCannon.isDraggingBall = false;
     leftCannon.isDraggingRamrod = false;
 
-    // Initialize right cannon
-    rightCannon.bounds = { 1350, 750, 100, 50 };
-    rightCannon.ballStackBounds = { 1350, 810, 30, 60 };
-    rightCannon.ramrodBounds = { 1390, 810, 60, 20 };
     rightCannon.state = CannonState::EMPTY;
     rightCannon.isLeftCannon = false;
     rightCannon.rotation = 0;
     rightCannon.isDraggingBall = false;
     rightCannon.isDraggingRamrod = false;
 
-    // Load textures
-    Image ballImg = GenImageChecked(20, 20, 1, 1, BLACK, DARKGRAY);
+    Image ballImg = GenImageColor(24, 24, BLANK);
+    ImageDrawCircle(&ballImg, 12, 12, 11, BLACK);
+    ImageDrawCircle(&ballImg, 12, 12, 9, DARKGRAY);
     cannonballTexture = LoadTextureFromImage(ballImg);
     UnloadImage(ballImg);
 
-    Image ramrodImg = GenImageChecked(40, 10, 1, 1, BROWN, DARKBROWN);
+    Image ramrodImg = GenImageChecked(60, 16, 1, 1, BROWN, DARKBROWN);
     ramrodTexture = LoadTextureFromImage(ramrodImg);
     UnloadImage(ramrodImg);
 }
@@ -39,13 +66,14 @@ void CannonLoadingUI::Update() {
 void CannonLoadingUI::UpdateCannonDragging(CannonUI& cannon) {
     Vector2 mousePos = GetMousePosition();
 
-    // Handle cannonball dragging
     if (CheckCollisionPointRec(mousePos, cannon.ballStackBounds) &&
         IsMouseButtonPressed(MOUSE_LEFT_BUTTON) &&
         cannon.state == CannonState::EMPTY) {
         cannon.isDraggingBall = true;
-        cannon.dragOffset = { mousePos.x - cannon.ballStackBounds.x,
-                           mousePos.y - cannon.ballStackBounds.y };
+        cannon.dragOffset = {
+            mousePos.x - cannon.ballStackBounds.x,
+            mousePos.y - cannon.ballStackBounds.y
+        };
     }
 
     if (cannon.isDraggingBall && IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
@@ -55,13 +83,14 @@ void CannonLoadingUI::UpdateCannonDragging(CannonUI& cannon) {
         cannon.isDraggingBall = false;
     }
 
-    // Handle ramrod dragging
     if (CheckCollisionPointRec(mousePos, cannon.ramrodBounds) &&
         IsMouseButtonPressed(MOUSE_LEFT_BUTTON) &&
         cannon.state == CannonState::LOADED_BALL) {
         cannon.isDraggingRamrod = true;
-        cannon.dragOffset = { mousePos.x - cannon.ramrodBounds.x,
-                           mousePos.y - cannon.ramrodBounds.y };
+        cannon.dragOffset = {
+            mousePos.x - cannon.ramrodBounds.x,
+            mousePos.y - cannon.ramrodBounds.y
+        };
     }
 
     if (cannon.isDraggingRamrod && IsMouseButtonReleased(MOUSE_LEFT_BUTTON)) {
@@ -73,37 +102,59 @@ void CannonLoadingUI::UpdateCannonDragging(CannonUI& cannon) {
 }
 
 void CannonLoadingUI::Draw() {
-    DrawText("CANNON LOADING", 1265, 710, 24, DARKGRAY);
-
+    DrawRectangle(1200, 600, 400, 400, Color{ 128, 0, 32, 255 });
+    DrawText("CANNON LOADING", 1265, 710, 24, WHITE);
     DrawCannon(leftCannon);
     DrawCannon(rightCannon);
 }
 
 void CannonLoadingUI::DrawCannon(const CannonUI& cannon) {
-    // Draw cannon
+    Color barrelColor = DARKGRAY;
+
     DrawRectanglePro(
         { cannon.bounds.x, cannon.bounds.y, cannon.bounds.width, cannon.bounds.height },
         { cannon.bounds.width / 2, cannon.bounds.height / 2 },
         cannon.rotation,
-        DARKGRAY
+        barrelColor
     );
 
-    // Draw cannonball stack
-    DrawRectangleRec(cannon.ballStackBounds, DARKGRAY);
-    for (int i = 0; i < 3; i++) {
-        DrawTexture(cannonballTexture,
-            cannon.ballStackBounds.x + 5,
-            cannon.ballStackBounds.y + i * 20 + 5,
-            WHITE);
+    DrawCircle(
+        cannon.bounds.x - cannon.bounds.width / 2,
+        cannon.bounds.y,
+        cannon.bounds.height / 2,
+        barrelColor
+    );
+
+    DrawCircle(
+        cannon.bounds.x + cannon.bounds.width / 2,
+        cannon.bounds.y,
+        cannon.bounds.height / 2 + 5,
+        barrelColor
+    );
+
+    for (int i = 1; i < 4; i++) {
+        float x = cannon.bounds.x - cannon.bounds.width / 2 + (cannon.bounds.width * i / 4);
+        DrawRectangle(x - 2, cannon.bounds.y - cannon.bounds.height / 2, 4, cannon.bounds.height, BLACK);
     }
 
-    // Draw ramrod
-    DrawRectangleRec(cannon.ramrodBounds, BROWN);
+    Vector2 arrowStart = {
+        cannon.bounds.x + cannon.bounds.width + 20,
+        cannon.bounds.y
+    };
+    Vector2 arrowEnd = {
+        arrowStart.x + 40,
+        arrowStart.y
+    };
+    DrawLineEx(arrowStart, arrowEnd, 3, YELLOW);
+    DrawTriangle(
+        { arrowEnd.x, arrowEnd.y },
+        { arrowEnd.x - 10, arrowEnd.y - 10 },
+        { arrowEnd.x - 10, arrowEnd.y + 10 },
+        YELLOW
+    );
 
-    // Draw loading state
     const char* stateText = "UNKNOWN";
     Color stateColor = WHITE;
-
     switch (cannon.state) {
     case CannonState::EMPTY:
         stateText = "EMPTY";
@@ -121,11 +172,35 @@ void CannonLoadingUI::DrawCannon(const CannonUI& cannon) {
 
     DrawText(stateText,
         cannon.bounds.x,
-        cannon.bounds.y + 60,
+        cannon.bounds.y + cannon.bounds.height / 2 + INDICATOR_OFFSET,
         15,
         stateColor);
 
-    // Draw dragging items
+    if (cannon.isLeftCannon) {
+        int rows = 4;
+        float ballSize = 20;
+        float startX = cannon.ballStackBounds.x;
+        float startY = cannon.ballStackBounds.y + cannon.ballStackBounds.height;
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < (rows - row); col++) {
+                float x = startX + (col * ballSize) + (row * ballSize / 2);
+                float y = startY - (row * ballSize);
+                DrawTexture(cannonballTexture, x, y, WHITE);
+            }
+        }
+    }
+
+    if (cannon.isLeftCannon) {
+        DrawRectangleRec(cannon.ramrodBounds, BROWN);
+        DrawCircle(
+            cannon.ramrodBounds.x + cannon.ramrodBounds.width - 10,
+            cannon.ramrodBounds.y + cannon.ramrodBounds.height / 2,
+            12,
+            DARKBROWN
+        );
+    }
+
     if (cannon.isDraggingBall) {
         Vector2 mousePos = GetMousePosition();
         DrawTexture(cannonballTexture,
