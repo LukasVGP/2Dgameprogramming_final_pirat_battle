@@ -20,13 +20,13 @@ UI::UI() {
 
     rightCannon.bounds = {
         startX,
-        startY + CANNON_SPACING,
+        startY + CANNON_SPACING + 80.0f,
         CANNON_WIDTH,
         CANNON_HEIGHT
     };
 
     float stackX = startX + 20.0f;
-    float stackY = startY + (1.5f * CANNON_SPACING);
+    float stackY = startY + 40.0f;
 
     leftCannon.ballStackBounds = rightCannon.ballStackBounds = {
         stackX,
@@ -36,8 +36,8 @@ UI::UI() {
     };
 
     leftCannon.ramrodBounds = rightCannon.ramrodBounds = {
-        stackX - 40.0f,
-        stackY + 100.0f,
+        startX - 60.0f,
+        startY + ((CANNON_SPACING + 80.0f) / 2),
         80.0f,
         20.0f
     };
@@ -54,13 +54,19 @@ UI::UI() {
     rightCannon.isDraggingBall = false;
     rightCannon.isDraggingRamrod = false;
 
+    // Updated solid black cannonball texture
     Image ballImg = GenImageColor(24, 24, BLANK);
     ImageDrawCircle(&ballImg, 12, 12, 11, BLACK);
-    ImageDrawCircle(&ballImg, 12, 12, 9, DARKGRAY);
+    ImageDrawCircle(&ballImg, 12, 12, 9, BLACK);
     cannonballTexture = LoadTextureFromImage(ballImg);
     UnloadImage(ballImg);
 
-    Image ramrodImg = GenImageChecked(60, 16, 1, 1, BROWN, DARKBROWN);
+    // Enhanced ramrod texture with details
+    Image ramrodImg = GenImageColor(60, 16, BROWN);
+    for (int i = 0; i < 60; i += 8) {
+        ImageDrawRectangle(&ramrodImg, i, 0, 4, 16, DARKBROWN);
+    }
+    ImageDrawRectangle(&ramrodImg, 45, 2, 15, 12, GRAY);
     ramrodTexture = LoadTextureFromImage(ramrodImg);
     UnloadImage(ramrodImg);
 }
@@ -97,6 +103,7 @@ void UI::DrawShipControls() {
         wheelBounds.x + wheelBounds.width / 2,
         wheelBounds.y + wheelBounds.height / 2
     };
+
     DrawCircle(wheelCenter.x, wheelCenter.y, wheelBounds.width / 2, DARKGRAY);
     DrawCircle(wheelCenter.x, wheelCenter.y, wheelBounds.width / 2 - 10, LIGHTGRAY);
 
@@ -137,6 +144,7 @@ void UI::DrawShipControls() {
     Rectangle leverHandle = { leverBounds.x - 10, leverY - 10, 70, 20 };
     DrawRectangleRounded(leverHandle, 0.5f, 8, RED);
     DrawRectangleRounded(leverHandle, 0.5f, 8, MAROON);
+
     DrawText("THROTTLE", leverBounds.x - 20, leverBounds.y + leverBounds.height + 10, 20, DARKGRAY);
 
     Color fireColor = firePressed ? RED : MAROON;
@@ -155,6 +163,7 @@ void UI::DrawCannonControls() {
 
 void UI::DrawCannon(const CannonUI& cannon) {
     Color barrelColor = DARKGRAY;
+
     DrawRectanglePro(
         { cannon.bounds.x, cannon.bounds.y, cannon.bounds.width, cannon.bounds.height },
         { cannon.bounds.width / 2, cannon.bounds.height / 2 },
@@ -181,24 +190,28 @@ void UI::DrawCannon(const CannonUI& cannon) {
         DrawRectangle(x - 2, cannon.bounds.y - cannon.bounds.height / 2, 4, cannon.bounds.height, BLACK);
     }
 
-    Vector2 arrowStart = {
-        cannon.bounds.x + cannon.bounds.width + 20,
-        cannon.bounds.y
-    };
-    Vector2 arrowEnd = {
-        arrowStart.x + 40,
-        arrowStart.y
-    };
-    DrawLineEx(arrowStart, arrowEnd, 3, YELLOW);
+    Vector2 arrowBase = { cannon.bounds.x, cannon.bounds.y };
+    float arrowDirection = cannon.isLeftCannon ? -1.0f : 1.0f;
+    Vector2 arrowTip = { arrowBase.x + (30.0f * arrowDirection), arrowBase.y };
+
+    DrawLineEx(arrowBase, arrowTip, 3.0f, RED);
     DrawTriangle(
-        { arrowEnd.x, arrowEnd.y },
-        { arrowEnd.x - 10, arrowEnd.y - 10 },
-        { arrowEnd.x - 10, arrowEnd.y + 10 },
-        YELLOW
+        arrowTip,
+        { arrowTip.x - (10.0f * arrowDirection), arrowTip.y - 5.0f },
+        { arrowTip.x - (10.0f * arrowDirection), arrowTip.y + 5.0f },
+        RED
     );
+
+    const char* sideText = cannon.isLeftCannon ? "PORT" : "STARBOARD";
+    DrawText(sideText,
+        cannon.bounds.x - 30,
+        cannon.bounds.y - 40,
+        15,
+        RED);
 
     const char* stateText = "UNKNOWN";
     Color stateColor = WHITE;
+
     switch (cannon.state) {
     case CannonState::EMPTY:
         stateText = "EMPTY";
@@ -221,6 +234,13 @@ void UI::DrawCannon(const CannonUI& cannon) {
         stateColor);
 
     if (cannon.isLeftCannon) {
+        // Draw cannonball stack label
+        DrawText("ROUND SHOT",
+            cannon.ballStackBounds.x - 20,
+            cannon.ballStackBounds.y - 20,
+            15,
+            DARKGRAY);
+
         int rows = 4;
         float ballSize = 20;
         float startX = cannon.ballStackBounds.x;
@@ -233,9 +253,14 @@ void UI::DrawCannon(const CannonUI& cannon) {
                 DrawTexture(cannonballTexture, x, y, WHITE);
             }
         }
-    }
 
-    if (cannon.isLeftCannon) {
+        // Draw ramrod label
+        DrawText("RAMROD",
+            cannon.ramrodBounds.x,
+            cannon.ramrodBounds.y - 20,
+            15,
+            DARKGRAY);
+
         DrawRectangleRec(cannon.ramrodBounds, BROWN);
         DrawCircle(
             cannon.ramrodBounds.x + cannon.ramrodBounds.width - 10,
