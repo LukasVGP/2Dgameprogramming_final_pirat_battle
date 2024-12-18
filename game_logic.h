@@ -6,7 +6,6 @@
 #include "environment.h"
 #include "menu.h"
 #include "game_states.h"
-#include "cannon_ui.h"
 
 class GameLogic {
 public:
@@ -18,9 +17,8 @@ public:
 private:
     NavyShip playerShip;
     PirateShip enemyShip;
-    UI ui;
+    UI ui;  // This now includes both ship controls and cannon loading functionality
     Environment env;
     Menu menu;
-    CannonLoadingUI cannonUI;
     GameState currentState;
 };
