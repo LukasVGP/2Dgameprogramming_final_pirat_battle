@@ -54,14 +54,12 @@ UI::UI() {
     rightCannon.isDraggingBall = false;
     rightCannon.isDraggingRamrod = false;
 
-    // Updated solid black cannonball texture
     Image ballImg = GenImageColor(24, 24, BLANK);
     ImageDrawCircle(&ballImg, 12, 12, 11, BLACK);
     ImageDrawCircle(&ballImg, 12, 12, 9, BLACK);
     cannonballTexture = LoadTextureFromImage(ballImg);
     UnloadImage(ballImg);
 
-    // Enhanced ramrod texture with details
     Image ramrodImg = GenImageColor(60, 16, BROWN);
     for (int i = 0; i < 60; i += 8) {
         ImageDrawRectangle(&ramrodImg, i, 0, 4, 16, DARKBROWN);
@@ -90,7 +88,6 @@ void UI::Update() {
 void UI::Draw() {
     DrawRectangleRounded({ 1210, 10, 280, 1180 }, 0.1f, 10, ColorAlpha(WHITE, 0.8f));
     DrawRectangleRounded({ 1210, 10, 280, 1180 }, 0.1f, 10, WHITE);
-
     DrawShipControls();
     DrawCannonControls();
 }
@@ -190,18 +187,6 @@ void UI::DrawCannon(const CannonUI& cannon) {
         DrawRectangle(x - 2, cannon.bounds.y - cannon.bounds.height / 2, 4, cannon.bounds.height, BLACK);
     }
 
-    Vector2 arrowBase = { cannon.bounds.x, cannon.bounds.y };
-    float arrowDirection = cannon.isLeftCannon ? -1.0f : 1.0f;
-    Vector2 arrowTip = { arrowBase.x + (30.0f * arrowDirection), arrowBase.y };
-
-    DrawLineEx(arrowBase, arrowTip, 3.0f, RED);
-    DrawTriangle(
-        arrowTip,
-        { arrowTip.x - (10.0f * arrowDirection), arrowTip.y - 5.0f },
-        { arrowTip.x - (10.0f * arrowDirection), arrowTip.y + 5.0f },
-        RED
-    );
-
     const char* sideText = cannon.isLeftCannon ? "PORT" : "STARBOARD";
     DrawText(sideText,
         cannon.bounds.x - 30,
@@ -234,7 +219,6 @@ void UI::DrawCannon(const CannonUI& cannon) {
         stateColor);
 
     if (cannon.isLeftCannon) {
-        // Draw cannonball stack label
         DrawText("ROUND SHOT",
             cannon.ballStackBounds.x - 20,
             cannon.ballStackBounds.y - 20,
@@ -254,7 +238,6 @@ void UI::DrawCannon(const CannonUI& cannon) {
             }
         }
 
-        // Draw ramrod label
         DrawText("RAMROD",
             cannon.ramrodBounds.x,
             cannon.ramrodBounds.y - 20,
@@ -335,4 +318,3 @@ float UI::Clamp(float value, float min, float max) {
     if (value > max) return max;
     return value;
 }
-

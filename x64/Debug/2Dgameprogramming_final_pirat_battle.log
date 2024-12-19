@@ -1,6 +1,45 @@
-﻿  pirateship.cpp
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\pirateship.cpp(54,20): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\pirateship.cpp(137,26): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+﻿  ui.cpp
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(104,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(104,27): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(105,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(105,27): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(133,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(133,27): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(134,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(134,27): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(135,81): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(135,40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(145,81): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(145,40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(150,55): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(150,36): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(151,55): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(151,36): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(152,65): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(152,46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(173,22): warning C4244: 'argument': conversion from 'const float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(172,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(180,22): warning C4244: 'argument': conversion from 'const float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(179,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(187,90): warning C4244: 'argument': conversion from 'const float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(187,46): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(187,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(193,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(192,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(217,52): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(216,22): warning C4244: 'argument': conversion from 'const float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(224,38): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(223,38): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(237,51): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(237,48): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(243,35): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(242,32): warning C4244: 'argument': conversion from 'const float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(250,35): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(249,63): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(260,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(259,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(268,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\ui.cpp(267,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   2Dgameprogramming_final_pirat_battle.vcxproj -> C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\x64\Debug\2Dgameprogramming_final_pirat_battle.exe
   'pwsh.exe' is not recognized as an internal or external command,
   operable program or batch file.
