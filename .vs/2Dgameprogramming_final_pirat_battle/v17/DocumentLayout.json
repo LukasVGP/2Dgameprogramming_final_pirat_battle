@@ -50,20 +50,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 2,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "pirateship.cpp",
-              "DocumentMoniker": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\pirateship.cpp",
-              "RelativeDocumentMoniker": "pirateship.cpp",
-              "ToolTip": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\pirateship.cpp",
-              "RelativeToolTip": "pirateship.cpp",
-              "ViewState": "AgIAAOMAAAAAAAAAAAAqwOwAAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-12T23:26:53.075Z"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 5,
@@ -87,6 +75,31 @@
               "ViewState": "AgIAAFIAAAAAAAAAAAAswHgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-12-12T23:22:48.063Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "navyship.cpp",
+              "DocumentMoniker": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\navyship.cpp",
+              "RelativeDocumentMoniker": "navyship.cpp",
+              "ToolTip": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\navyship.cpp",
+              "RelativeToolTip": "navyship.cpp",
+              "ViewState": "AgIAAKgAAAAAAAAAAAAAAMMAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-12T21:11:02.527Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "pirateship.cpp",
+              "DocumentMoniker": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\pirateship.cpp",
+              "RelativeDocumentMoniker": "pirateship.cpp",
+              "ToolTip": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\pirateship.cpp",
+              "RelativeToolTip": "pirateship.cpp",
+              "ViewState": "AgIAAOMAAAAAAAAAAAAqwOwAAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-12-12T23:26:53.075Z"
             },
             {
               "$type": "Document",
@@ -134,8 +147,7 @@
               "RelativeToolTip": "menu.cpp",
               "ViewState": "AgIAAFkAAAAAAAAAAAAAAGgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-12T21:12:34.926Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-12T21:12:34.926Z"
             },
             {
               "$type": "Document",
@@ -148,19 +160,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-12-12T21:11:51.129Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "navyship.cpp",
-              "DocumentMoniker": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\navyship.cpp",
-              "RelativeDocumentMoniker": "navyship.cpp",
-              "ToolTip": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\navyship.cpp",
-              "RelativeToolTip": "navyship.cpp",
-              "ViewState": "AgIAAKgAAAAAAAAAAAAAAMMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-12T21:11:02.527Z",
-              "EditorCaption": ""
             },
             {
               "$type": "Document",
