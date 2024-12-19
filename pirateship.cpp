@@ -3,76 +3,112 @@
 #include <algorithm>
 
 PirateShip::PirateShip() {
-    position.x = ISLAND_CENTER.x + CIRCLE_RADIUS;
-    position.y = ISLAND_CENTER.y;
+    position = { 200, 600 };
+    targetPosition = position;
+    rotation = 0.0f;
+    targetRotation = 0.0f;
+    currentSpeed = 0.0f;
+    health = 100.0f;
+    maxHealth = 100.0f;
+    isSinking = false;
+    sinkProgress = 0.0f;
+    reloadTimer = 0.0f;
 }
 
 void PirateShip::Update() {
     if (isSinking) {
         sinkProgress += 0.01f;
-        if (sinkProgress >= 1.0f) return;
+        return;
     }
-    UpdateAIMovement();
+
+    UpdateAI();
     UpdatePhysics();
     UpdateCannonballs();
+
+    if (reloadTimer > 0) {
+        reloadTimer -= GetFrameTime();
+    }
 }
 
-void PirateShip::UpdateAIMovement() {
-    circleTime += GetFrameTime() * CIRCLE_SPEED;
+void PirateShip::UpdateAI() {
+    float distanceToTarget = GetDistanceTo(targetShipPos);
+    isInCombat = distanceToTarget < ATTACK_RANGE;
 
-    // Calculate next position on circle
-    Vector2 nextPos;
-    nextPos.x = ISLAND_CENTER.x + cosf(circleTime + 0.1f) * CIRCLE_RADIUS;
-    nextPos.y = ISLAND_CENTER.y + sinf(circleTime + 0.1f) * CIRCLE_RADIUS;
+    if (isInCombat) {
+        float angleToTarget = GetAngleTo(targetShipPos);
+        targetRotation = angleToTarget;
 
-    // Calculate current target position
-    Vector2 targetPos;
-    targetPos.x = ISLAND_CENTER.x + cosf(circleTime) * CIRCLE_RADIUS;
-    targetPos.y = ISLAND_CENTER.y + sinf(circleTime) * CIRCLE_RADIUS;
+        if (distanceToTarget < PREFERRED_RANGE) {
+            currentSpeed = -MAX_SPEED * 0.3f;
+        }
+        else if (distanceToTarget > PREFERRED_RANGE) {
+            currentSpeed = MAX_SPEED * 0.6f;
+        }
 
-    // Calculate direction to next position for rotation
-    float dx = nextPos.x - position.x;
-    float dy = nextPos.y - position.y;
-    targetRotation = atan2f(dy, dx);  // Direct angle calculation
+        if (reloadTimer <= 0 && fabs(angleToTarget - rotation) < PI / 4) {
+            AttemptToShoot();
+        }
+    }
+    else {
+        float patrolRadius = 150.0f;
+        float time = GetTime() * 0.25f;
 
-    // Set constant speed for continuous movement
-    targetSpeed = MAX_SPEED * 0.5f;
+        Vector2 nextPosition;
+        nextPosition.x = 200 + cosf(time) * patrolRadius;
+        nextPosition.y = 600 + sinf(time) * patrolRadius;
 
-    // Move towards target position
-    position = targetPos;
+        // Calculate tangent direction
+        Vector2 tangent;
+        tangent.x = -sinf(time);
+        tangent.y = cosf(time);
+
+        // Set target position slightly ahead on the patrol path
+        targetPosition.x = nextPosition.x + tangent.x * 30.0f;
+        targetPosition.y = nextPosition.y + tangent.y * 30.0f;
+
+        float angleToTarget = atan2f(tangent.y, tangent.x);
+        float angleDiff = angleToTarget - rotation;
+
+        while (angleDiff > PI) angleDiff -= 2 * PI;
+        while (angleDiff < -PI) angleDiff += 2 * PI;
+
+        targetRotation = rotation + angleDiff * 0.1f;
+        float turnFactor = 1.0f - fabs(angleDiff) / PI;
+        currentSpeed = MAX_SPEED * (0.5f + 0.5f * turnFactor);
+
+        position = nextPosition;
+    }
 }
 
 void PirateShip::UpdatePhysics() {
     float deltaTime = GetFrameTime();
 
-    // Update rotation
-    float rotationDiff = targetRotation - rotation;
-    while (rotationDiff > PI) rotationDiff -= 2 * PI;
-    while (rotationDiff < -PI) rotationDiff += 2 * PI;
-    float targetAngularVel = rotationDiff * TURN_RATE;
-    angularVelocity = lerp(angularVelocity, targetAngularVel, ANGULAR_DAMPING * deltaTime);
-    rotation += angularVelocity * deltaTime;
+    float angleDiff = targetRotation - rotation;
+    while (angleDiff > PI) angleDiff -= 2 * PI;
+    while (angleDiff < -PI) angleDiff += 2 * PI;
 
-    // Calculate forward direction based on rotation
-    Vector2 forwardDir = {
+    rotation += angleDiff * TURN_RATE * deltaTime;
+
+    Vector2 forward = {
         cosf(rotation),
         sinf(rotation)
     };
 
-    // Apply velocity in the forward direction
-    float targetVelocityMagnitude = targetSpeed * MAX_SPEED;
-    Vector2 targetVelocity = {
-        forwardDir.x * targetVelocityMagnitude,
-        forwardDir.y * targetVelocityMagnitude
-    };
+    velocity.x = forward.x * currentSpeed;
+    velocity.y = forward.y * currentSpeed;
 
-    // Smoothly interpolate current velocity towards target velocity
-    velocity.x = lerp(velocity.x, targetVelocity.x, ACCELERATION * deltaTime);
-    velocity.y = lerp(velocity.y, targetVelocity.y, ACCELERATION * deltaTime);
+    if (!isInCombat) {
+        float lerpFactor = 0.1f;
+        position.x = lerp(position.x, targetPosition.x, lerpFactor);
+        position.y = lerp(position.y, targetPosition.y, lerpFactor);
+    }
+    else {
+        position.x += velocity.x;
+        position.y += velocity.y;
+    }
 
-    // Apply damping
-    velocity.x *= LINEAR_DAMPING;
-    velocity.y *= LINEAR_DAMPING;
+    position.x = Clamp(position.x, 0, 1200);
+    position.y = Clamp(position.y, 0, 1200);
 }
 
 void PirateShip::Draw() {
@@ -81,7 +117,6 @@ void PirateShip::Draw() {
     float rot = rotation * RAD2DEG;
     Vector2 rotatedOffset = { cosf(rotation), sinf(rotation) };
 
-    // Main hull
     DrawRectanglePro(
         Rectangle{ center.x, center.y, 70, 25 },
         Vector2{ 35, 12.5f },
@@ -89,7 +124,6 @@ void PirateShip::Draw() {
         mainColor
     );
 
-    // Sharp bow with decorative figurehead
     Vector2 bowTip = {
         center.x + rotatedOffset.x * 40,
         center.y + rotatedOffset.y * 40
@@ -101,7 +135,6 @@ void PirateShip::Draw() {
         DARKBROWN
     );
 
-    // Ornate stern castle
     DrawRectanglePro(
         Rectangle{ center.x - rotatedOffset.x * 30, center.y - rotatedOffset.y * 30, 30, 35 },
         Vector2{ 15, 17.5f },
@@ -109,7 +142,6 @@ void PirateShip::Draw() {
         DARKBROWN
     );
 
-    // Two tall masts with ragged sails
     for (int i = -1; i <= 1; i += 2) {
         float mastOffset = i * 20;
         DrawLineEx(
@@ -119,7 +151,6 @@ void PirateShip::Draw() {
             DARKBROWN
         );
 
-        // Triangular pirate sails
         DrawTriangle(
             Vector2{ center.x + rotatedOffset.x * mastOffset, center.y + rotatedOffset.y * mastOffset - 45 },
             Vector2{ center.x + rotatedOffset.x * (mastOffset - 25), center.y + rotatedOffset.y * mastOffset - 10 },
@@ -128,7 +159,6 @@ void PirateShip::Draw() {
         );
     }
 
-    // Jolly Roger flag
     DrawRectanglePro(
         Rectangle{ center.x, center.y - 50, 25, 20 },
         Vector2{ 12.5f, 0 },
@@ -136,18 +166,11 @@ void PirateShip::Draw() {
         BLACK
     );
 
-    // Skull on flag
-    Vector2 skullPos = {
-        center.x,
-        center.y - 40
-    };
-    DrawCircle(skullPos.x, skullPos.y, 6, WHITE);
-    DrawCircle(skullPos.x - 2, skullPos.y - 1, 2, BLACK);
-    DrawCircle(skullPos.x + 2, skullPos.y - 1, 2, BLACK);
-    DrawLine(skullPos.x - 3, skullPos.y + 2, skullPos.x + 3, skullPos.y + 2, BLACK);
-
     DrawShipDetails();
 }
+
+
+
 
 void PirateShip::DrawShipDetails() {
     Vector2 center = position;
@@ -171,79 +194,85 @@ void PirateShip::DrawShipDetails() {
         GREEN
     );
 
-    const char* name = "Pirate";
-    DrawText(name,
-        static_cast<int>(center.x - MeasureText(name, 20) / 2),
-        static_cast<int>(center.y - 30),
-        20,
-        WHITE);
+    Vector2 arrowStart = position;
+    float arrowLength = 45.0f;
+    Vector2 leftArrow = {
+        arrowStart.x + cosf(rotation - PI / 2) * arrowLength,
+        arrowStart.y + sinf(rotation - PI / 2) * arrowLength
+    };
+    Vector2 rightArrow = {
+        arrowStart.x + cosf(rotation + PI / 2) * arrowLength,
+        arrowStart.y + sinf(rotation + PI / 2) * arrowLength
+    };
 
-    if (reloadTime > 0.0f) {
-        char reloadText[32];
-        sprintf_s(reloadText, sizeof(reloadText), "Reload: %.1f", reloadTime);
-        DrawText(reloadText,
-            static_cast<int>(center.x - MeasureText(reloadText, 20) / 2),
-            static_cast<int>(center.y - 50),
-            20,
-            YELLOW);
-    }
+    DrawLineEx(arrowStart, leftArrow, 3.0f, RED);
+    DrawLineEx(arrowStart, rightArrow, 3.0f, RED);
 
     for (const auto& ball : cannonballs) {
         if (ball.active) {
-            DrawCircle(
-                static_cast<int>(ball.pos.x),
-                static_cast<int>(ball.pos.y),
-                3,
-                BLACK);
+            DrawCircleV(ball.pos, 3.0f, BLACK);
         }
     }
 }
 
-void PirateShip::Shoot() {
-    if (reloadTime <= 0.0f) {
-        // Left broadside
-        for (int i = 0; i < 3; i++) {
-            Cannonball ball;
-            ball.pos = position;
-            float angle = rotation - PI / 2;
-            ball.velocity = { cosf(angle) * 5.0f, sinf(angle) * 5.0f };
-            ball.active = true;
-            ball.distanceTraveled = 0.0f;
-            cannonballs.push_back(ball);
-        }
+bool PirateShip::IsPointInCannonRange(Vector2 point) {
+    float expandedRadius = 30.0f;
+    Vector2 leftCannon = {
+        position.x + cosf(rotation - PI / 2) * 15.0f,
+        position.y + sinf(rotation - PI / 2) * 15.0f
+    };
+    Vector2 rightCannon = {
+        position.x + cosf(rotation + PI / 2) * 15.0f,
+        position.y + sinf(rotation + PI / 2) * 15.0f
+    };
 
-        // Right broadside
-        for (int i = 0; i < 3; i++) {
-            Cannonball ball;
-            ball.pos = position;
-            float angle = rotation + PI / 2;
-            ball.velocity = { cosf(angle) * 5.0f, sinf(angle) * 5.0f };
-            ball.active = true;
-            ball.distanceTraveled = 0.0f;
-            cannonballs.push_back(ball);
-        }
+    return (CheckCollisionPointCircle(point, leftCannon, expandedRadius) ||
+        CheckCollisionPointCircle(point, rightCannon, expandedRadius));
+}
 
-        reloadTime = RELOAD_DURATION;
+void PirateShip::AttemptToShoot() {
+    if (GetRandomValue(0, 100) < ACCURACY * 100) {
+        float leftAngle = rotation - PI / 2;
+        float rightAngle = rotation + PI / 2;
+
+        for (int i = 0; i < 3; i++) {
+            Cannonball leftBall;
+            leftBall.pos = position;
+            leftBall.velocity = {
+                cosf(leftAngle) * 5.0f,
+                sinf(leftAngle) * 5.0f
+            };
+            leftBall.active = true;
+            cannonballs.push_back(leftBall);
+
+            Cannonball rightBall;
+            rightBall.pos = position;
+            rightBall.velocity = {
+                cosf(rightAngle) * 5.0f,
+                sinf(rightAngle) * 5.0f
+            };
+            rightBall.active = true;
+            cannonballs.push_back(rightBall);
+        }
     }
+
+    reloadTimer = RELOAD_TIME;
 }
 
 void PirateShip::UpdateCannonballs() {
-    if (reloadTime > 0.0f) {
-        reloadTime -= GetFrameTime();
-    }
-
     for (auto& ball : cannonballs) {
         if (ball.active) {
-            Vector2 oldPos = ball.pos;
             ball.pos.x += ball.velocity.x;
             ball.pos.y += ball.velocity.y;
-            float dx = ball.pos.x - oldPos.x;
-            float dy = ball.pos.y - oldPos.y;
-            ball.distanceTraveled += sqrtf(dx * dx + dy * dy);
 
-            if (ball.distanceTraveled > MAX_SHOOT_RANGE ||
-                ball.pos.x < 0 || ball.pos.x > 1200 ||
-                ball.pos.y < 0 || ball.pos.y > 1200) {
+            float distanceTraveled = sqrtf(
+                (ball.pos.x - position.x) * (ball.pos.x - position.x) +
+                (ball.pos.y - position.y) * (ball.pos.y - position.y)
+            );
+
+            if (ball.pos.x < 0 || ball.pos.x > 1200 ||
+                ball.pos.y < 0 || ball.pos.y > 1200 ||
+                distanceTraveled > MAX_SHOOT_RANGE) {
                 ball.active = false;
             }
         }
@@ -252,7 +281,8 @@ void PirateShip::UpdateCannonballs() {
     cannonballs.erase(
         std::remove_if(cannonballs.begin(), cannonballs.end(),
             [](const Cannonball& ball) { return !ball.active; }),
-        cannonballs.end());
+        cannonballs.end()
+    );
 }
 
 void PirateShip::TakeDamage(float amount) {
@@ -262,6 +292,16 @@ void PirateShip::TakeDamage(float amount) {
         isSinking = true;
         sinkProgress = 0.0f;
     }
+}
+
+float PirateShip::GetAngleTo(Vector2 target) const {
+    return atan2f(target.y - position.y, target.x - position.x);
+}
+
+float PirateShip::GetDistanceTo(Vector2 target) const {
+    float dx = target.x - position.x;
+    float dy = target.y - position.y;
+    return sqrtf(dx * dx + dy * dy);
 }
 
 float PirateShip::lerp(float start, float end, float amount) {

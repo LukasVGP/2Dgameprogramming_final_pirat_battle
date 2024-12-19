@@ -1,15 +1,6 @@
 ﻿  pirateship.cpp
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\pirateship.cpp(114,26): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\pirateship.cpp(144,36): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\pirateship.cpp(144,24): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\pirateship.cpp(145,43): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\pirateship.cpp(145,27): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\pirateship.cpp(146,43): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\pirateship.cpp(146,27): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\pirateship.cpp(147,73): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\pirateship.cpp(147,57): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\pirateship.cpp(147,41): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\pirateship.cpp(147,25): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\pirateship.cpp(54,20): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\2Dgameprogramming_final_pirat_battle\pirateship.cpp(146,26): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
   2Dgameprogramming_final_pirat_battle.vcxproj -> C:\Users\Lukas\source\repos\2Dgameprogramming_final_pirat_battle\x64\Debug\2Dgameprogramming_final_pirat_battle.exe
   'pwsh.exe' is not recognized as an internal or external command,
   operable program or batch file.
