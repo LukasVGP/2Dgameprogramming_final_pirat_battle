@@ -4,37 +4,36 @@
 
 class PirateShip {
 public:
-    // Define Cannonball struct first
     struct Cannonball {
         Vector2 pos;
         Vector2 velocity;
         bool active;
     };
 
-    // Constructor and main methods
     PirateShip();
     void Update();
     void Draw();
     void TakeDamage(float amount);
-    bool IsPointInCannonRange(Vector2 point);
 
-    // Getter methods for game_logic.cpp
+    // Add these new public member functions
     Vector2 GetPosition() const { return position; }
     const std::vector<Cannonball>& GetCannonballs() const { return cannonballs; }
     bool IsSinking() const { return isSinking; }
 
-    // Constants
-    static constexpr float MAX_SPEED = 0.1f;
-    static constexpr float TURN_RATE = 2.0f;
-    static constexpr float RELOAD_TIME = 2.0f;
-    static constexpr float ACCURACY = 0.7f;
-    static constexpr float MAX_SHOOT_RANGE = 400.0f;
-    static constexpr float ATTACK_RANGE = 300.0f;
-    static constexpr float PREFERRED_RANGE = 200.0f;
+    Vector2 position;
+    Vector2 targetShipPos;
+    std::vector<Cannonball> cannonballs;
 
 private:
-    // Ship properties
-    Vector2 position;
+#define PI 3.14159265359f
+#define MAX_SPEED 2.0f
+#define TURN_RATE 2.0f
+#define ATTACK_RANGE 400.0f
+#define PREFERRED_RANGE 200.0f
+#define MAX_SHOOT_RANGE 300.0f
+#define ACCURACY 0.8f
+#define RELOAD_TIME 30.0f
+
     Vector2 targetPosition;
     Vector2 velocity;
     float rotation;
@@ -42,16 +41,11 @@ private:
     float currentSpeed;
     float health;
     float maxHealth;
+    float reloadTimer;
     bool isSinking;
     float sinkProgress;
-    float reloadTimer;
-
-    // Combat properties
-    Vector2 targetShipPos;
     bool isInCombat;
-    std::vector<Cannonball> cannonballs;
 
-    // Private methods
     void UpdateAI();
     void UpdatePhysics();
     void UpdateCannonballs();

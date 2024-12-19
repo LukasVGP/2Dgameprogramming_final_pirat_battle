@@ -20,11 +20,9 @@ void PirateShip::Update() {
         sinkProgress += 0.01f;
         return;
     }
-
     UpdateAI();
     UpdatePhysics();
     UpdateCannonballs();
-
     if (reloadTimer > 0) {
         reloadTimer -= GetFrameTime();
     }
@@ -45,7 +43,7 @@ void PirateShip::UpdateAI() {
             currentSpeed = MAX_SPEED * 0.6f;
         }
 
-        if (reloadTimer <= 0 && fabs(angleToTarget - rotation) < PI / 4) {
+        if (reloadTimer <= 0 && distanceToTarget < MAX_SHOOT_RANGE) {
             AttemptToShoot();
         }
     }
@@ -53,28 +51,24 @@ void PirateShip::UpdateAI() {
         float patrolRadius = 150.0f;
         float time = GetTime() * 0.25f;
 
-        // Calculate next position
         Vector2 nextPosition;
         nextPosition.x = 200 + cosf(time) * patrolRadius;
         nextPosition.y = 600 + sinf(time) * patrolRadius;
 
-        // Calculate movement direction
         Vector2 direction;
         direction.x = -sinf(time);
         direction.y = cosf(time);
 
-        // Set rotation to match movement direction
         targetRotation = atan2f(direction.y, direction.x);
-
         position = nextPosition;
-        currentSpeed = MAX_SPEED;
+        currentSpeed = MAX_SPEED * 0.5f;
     }
 }
 
 void PirateShip::UpdatePhysics() {
     float deltaTime = GetFrameTime();
-
     float angleDiff = targetRotation - rotation;
+
     while (angleDiff > PI) angleDiff -= 2 * PI;
     while (angleDiff < -PI) angleDiff += 2 * PI;
 
@@ -119,6 +113,7 @@ void PirateShip::Draw() {
         center.x + rotatedOffset.x * 40,
         center.y + rotatedOffset.y * 40
     };
+
     DrawTriangle(
         Vector2{ center.x + rotatedOffset.x * 35, center.y + rotatedOffset.y * 35 - 12 },
         Vector2{ center.x + rotatedOffset.x * 35, center.y + rotatedOffset.y * 35 + 12 },
@@ -189,48 +184,25 @@ void PirateShip::DrawShipDetails() {
     }
 }
 
-bool PirateShip::IsPointInCannonRange(Vector2 point) {
-    float expandedRadius = 30.0f;
-    Vector2 leftCannon = {
-        position.x + cosf(rotation - PI / 2) * 15.0f,
-        position.y + sinf(rotation - PI / 2) * 15.0f
-    };
-    Vector2 rightCannon = {
-        position.x + cosf(rotation + PI / 2) * 15.0f,
-        position.y + sinf(rotation + PI / 2) * 15.0f
-    };
-
-    return (CheckCollisionPointCircle(point, leftCannon, expandedRadius) ||
-        CheckCollisionPointCircle(point, rightCannon, expandedRadius));
-}
-
 void PirateShip::AttemptToShoot() {
-    if (GetRandomValue(0, 100) < ACCURACY * 100) {
-        float leftAngle = rotation - PI / 2;
-        float rightAngle = rotation + PI / 2;
+    if (reloadTimer <= 0) {
+        Vector2 directionToTarget = {
+            targetShipPos.x - position.x,
+            targetShipPos.y - position.y
+        };
+        float angleToTarget = atan2f(directionToTarget.y, directionToTarget.x);
 
-        for (int i = 0; i < 3; i++) {
-            Cannonball leftBall;
-            leftBall.pos = position;
-            leftBall.velocity = {
-                cosf(leftAngle) * 5.0f,
-                sinf(leftAngle) * 5.0f
-            };
-            leftBall.active = true;
-            cannonballs.push_back(leftBall);
+        Cannonball newBall;
+        newBall.pos = position;
+        newBall.velocity = {
+            cosf(angleToTarget) * 5.0f,
+            sinf(angleToTarget) * 5.0f
+        };
+        newBall.active = true;
+        cannonballs.push_back(newBall);
 
-            Cannonball rightBall;
-            rightBall.pos = position;
-            rightBall.velocity = {
-                cosf(rightAngle) * 5.0f,
-                sinf(rightAngle) * 5.0f
-            };
-            rightBall.active = true;
-            cannonballs.push_back(rightBall);
-        }
+        reloadTimer = 30.0f;  // 30 second reload time
     }
-
-    reloadTimer = RELOAD_TIME;
 }
 
 void PirateShip::UpdateCannonballs() {
