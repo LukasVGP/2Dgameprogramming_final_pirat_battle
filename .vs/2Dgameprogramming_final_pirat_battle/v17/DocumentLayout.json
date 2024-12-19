@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{33FFE45E-9515-4DE2-A22B-889AFC2B6E8A}|2Dgameprogramming_final_pirat_battle.vcxproj|C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\menu.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{33FFE45E-9515-4DE2-A22B-889AFC2B6E8A}|2Dgameprogramming_final_pirat_battle.vcxproj|solutionrelative:menu.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{33FFE45E-9515-4DE2-A22B-889AFC2B6E8A}|2Dgameprogramming_final_pirat_battle.vcxproj|C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\menu.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{33FFE45E-9515-4DE2-A22B-889AFC2B6E8A}|2Dgameprogramming_final_pirat_battle.vcxproj|solutionrelative:menu.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{33FFE45E-9515-4DE2-A22B-889AFC2B6E8A}|2Dgameprogramming_final_pirat_battle.vcxproj|C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\navyship.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{33FFE45E-9515-4DE2-A22B-889AFC2B6E8A}|2Dgameprogramming_final_pirat_battle.vcxproj|solutionrelative:navyship.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
@@ -31,14 +39,6 @@
       "RelativeMoniker": "D:0:0:{33FFE45E-9515-4DE2-A22B-889AFC2B6E8A}|2Dgameprogramming_final_pirat_battle.vcxproj|solutionrelative:game_logic.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{33FFE45E-9515-4DE2-A22B-889AFC2B6E8A}|2Dgameprogramming_final_pirat_battle.vcxproj|C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\menu.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{33FFE45E-9515-4DE2-A22B-889AFC2B6E8A}|2Dgameprogramming_final_pirat_battle.vcxproj|solutionrelative:menu.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{33FFE45E-9515-4DE2-A22B-889AFC2B6E8A}|2Dgameprogramming_final_pirat_battle.vcxproj|C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\menu.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{33FFE45E-9515-4DE2-A22B-889AFC2B6E8A}|2Dgameprogramming_final_pirat_battle.vcxproj|solutionrelative:menu.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{33FFE45E-9515-4DE2-A22B-889AFC2B6E8A}|2Dgameprogramming_final_pirat_battle.vcxproj|C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\ui.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{33FFE45E-9515-4DE2-A22B-889AFC2B6E8A}|2Dgameprogramming_final_pirat_battle.vcxproj|solutionrelative:ui.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
@@ -50,11 +50,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "pirateship.cpp",
               "DocumentMoniker": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\pirateship.cpp",
               "RelativeDocumentMoniker": "pirateship.cpp",
@@ -66,7 +66,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "environment.h",
               "DocumentMoniker": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\environment.h",
               "RelativeDocumentMoniker": "environment.h",
@@ -78,7 +78,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "environment.cpp",
               "DocumentMoniker": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\environment.cpp",
               "RelativeDocumentMoniker": "environment.cpp",
@@ -86,12 +86,11 @@
               "RelativeToolTip": "environment.cpp",
               "ViewState": "AgIAAFIAAAAAAAAAAAAswHgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-12T23:22:48.063Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-12-12T23:22:48.063Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "game_logic.cpp",
               "DocumentMoniker": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\game_logic.cpp",
               "RelativeDocumentMoniker": "game_logic.cpp",
@@ -103,7 +102,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "game_states.h",
               "DocumentMoniker": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\game_states.h",
               "RelativeDocumentMoniker": "game_states.h",
@@ -115,7 +114,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "game_logic.h",
               "DocumentMoniker": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\game_logic.h",
               "RelativeDocumentMoniker": "game_logic.h",
@@ -127,37 +126,39 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 0,
               "Title": "menu.cpp",
               "DocumentMoniker": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\menu.cpp",
               "RelativeDocumentMoniker": "menu.cpp",
               "ToolTip": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\menu.cpp",
               "RelativeToolTip": "menu.cpp",
-              "ViewState": "AgIAABAAAAAAAAAAAAAqwDYAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAGAAAAAAAAAAAAAswGgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-12-12T21:12:34.926Z"
+              "WhenOpened": "2024-12-12T21:12:34.926Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 1,
               "Title": "menu.h",
               "DocumentMoniker": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\menu.h",
               "RelativeDocumentMoniker": "menu.h",
               "ToolTip": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\menu.h",
               "RelativeToolTip": "menu.h",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-12-12T21:11:51.129Z"
+              "WhenOpened": "2024-12-12T21:11:51.129Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "navyship.cpp",
               "DocumentMoniker": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\navyship.cpp",
               "RelativeDocumentMoniker": "navyship.cpp",
               "ToolTip": "C:\\Users\\hopli\\Documents\\GitHub\\2Dgameprogramming_final_pirat_battle\\navyship.cpp",
               "RelativeToolTip": "navyship.cpp",
-              "ViewState": "AgIAALMAAAAAAAAAAAAqwNkAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAOMAAAAAAAAAAAAqwNkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-12-12T21:11:02.527Z",
               "EditorCaption": ""
