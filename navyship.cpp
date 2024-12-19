@@ -190,8 +190,8 @@ void NavyShip::SetSteering(float value) {
 
 void NavyShip::SetThrottle(float value) {
     float scaledSpeed = (value > 0) ?
-        (value * 0.2f * MAX_SPEED) :
-        (value * 0.1f * MAX_SPEED);
+        (value * 0.6f * MAX_SPEED) :
+        (value * 0.3f * MAX_SPEED);
     targetSpeed = scaledSpeed;
 }
 
