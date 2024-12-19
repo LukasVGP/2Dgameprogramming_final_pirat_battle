@@ -53,30 +53,21 @@ void PirateShip::UpdateAI() {
         float patrolRadius = 150.0f;
         float time = GetTime() * 0.25f;
 
+        // Calculate next position
         Vector2 nextPosition;
         nextPosition.x = 200 + cosf(time) * patrolRadius;
         nextPosition.y = 600 + sinf(time) * patrolRadius;
 
-        // Calculate tangent direction
-        Vector2 tangent;
-        tangent.x = -sinf(time);
-        tangent.y = cosf(time);
+        // Calculate movement direction
+        Vector2 direction;
+        direction.x = -sinf(time);
+        direction.y = cosf(time);
 
-        // Set target position slightly ahead on the patrol path
-        targetPosition.x = nextPosition.x + tangent.x * 30.0f;
-        targetPosition.y = nextPosition.y + tangent.y * 30.0f;
-
-        float angleToTarget = atan2f(tangent.y, tangent.x);
-        float angleDiff = angleToTarget - rotation;
-
-        while (angleDiff > PI) angleDiff -= 2 * PI;
-        while (angleDiff < -PI) angleDiff += 2 * PI;
-
-        targetRotation = rotation + angleDiff * 0.1f;
-        float turnFactor = 1.0f - fabs(angleDiff) / PI;
-        currentSpeed = MAX_SPEED * (0.5f + 0.5f * turnFactor);
+        // Set rotation to match movement direction
+        targetRotation = atan2f(direction.y, direction.x);
 
         position = nextPosition;
+        currentSpeed = MAX_SPEED;
     }
 }
 
@@ -169,9 +160,6 @@ void PirateShip::Draw() {
     DrawShipDetails();
 }
 
-
-
-
 void PirateShip::DrawShipDetails() {
     Vector2 center = position;
     float healthBarWidth = 40;
@@ -193,20 +181,6 @@ void PirateShip::DrawShipDetails() {
         static_cast<int>(healthBarHeight),
         GREEN
     );
-
-    Vector2 arrowStart = position;
-    float arrowLength = 45.0f;
-    Vector2 leftArrow = {
-        arrowStart.x + cosf(rotation - PI / 2) * arrowLength,
-        arrowStart.y + sinf(rotation - PI / 2) * arrowLength
-    };
-    Vector2 rightArrow = {
-        arrowStart.x + cosf(rotation + PI / 2) * arrowLength,
-        arrowStart.y + sinf(rotation + PI / 2) * arrowLength
-    };
-
-    DrawLineEx(arrowStart, leftArrow, 3.0f, RED);
-    DrawLineEx(arrowStart, rightArrow, 3.0f, RED);
 
     for (const auto& ball : cannonballs) {
         if (ball.active) {
